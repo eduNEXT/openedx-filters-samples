@@ -1,8 +1,7 @@
 openedx-filters-samples
 =============================
 
-|pypi-badge| |ci-badge| |codecov-badge| |doc-badge| |pyversions-badge|
-|license-badge|
+|ci-badge| |codecov-badge| |pyversions-badge| |license-badge|
 
 
 Overview (please modify)
@@ -105,10 +104,6 @@ For more information about these options, see the `Getting Help`_ page.
 .. _community Slack workspace: https://openedx.slack.com/
 .. _Getting Help: https://openedx.org/getting-help
 
-.. |pypi-badge| image:: https://img.shields.io/pypi/v/openedx-filters-samples.svg
-    :target: https://pypi.python.org/pypi/openedx-filters-samples/
-    :alt: PyPI
-
 .. |ci-badge| image:: https://github.com/eduNEXT/openedx-filters-samples/workflows/Python%20CI/badge.svg?branch=main
     :target: https://github.com/edx/openedx-filters-samples/actions
     :alt: CI
@@ -116,10 +111,6 @@ For more information about these options, see the `Getting Help`_ page.
 .. |codecov-badge| image:: https://codecov.io/github/edx/openedx-filters-samples/coverage.svg?branch=main
     :target: https://codecov.io/github/eduNEXT/openedx-filters-samples?branch=main
     :alt: Codecov
-
-.. |doc-badge| image:: https://readthedocs.org/projects/openedx-filters-samples/badge/?version=latest
-    :target: https://openedx-filters-samples.readthedocs.io/en/latest/
-    :alt: Documentation
 
 .. |pyversions-badge| image:: https://img.shields.io/pypi/pyversions/openedx-filters-samples.svg
     :target: https://pypi.python.org/pypi/openedx-filters-samples/
