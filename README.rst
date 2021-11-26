@@ -4,19 +4,11 @@ openedx-filters-samples
 |pypi-badge| |ci-badge| |codecov-badge| |doc-badge| |pyversions-badge|
 |license-badge|
 
-The ``README.rst`` file should start with a brief description of the repository,
-which sets it in the context of other repositories under the ``edx``
-organization. It should make clear where this fits in to the overall edX
-codebase.
-
-Used to create Open edX Filters steps for testing purposes 
 
 Overview (please modify)
 ------------------------
 
-The ``README.rst`` file should then provide an overview of the code in this
-repository, including the main components and useful entry points for starting
-to understand the code in more detail.
+Used to create Open edX Filters steps for testing purposes.
 
 Documentation
 -------------
@@ -117,12 +109,12 @@ For more information about these options, see the `Getting Help`_ page.
     :target: https://pypi.python.org/pypi/openedx-filters-samples/
     :alt: PyPI
 
-.. |ci-badge| image:: https://github.com/edx/openedx-filters-samples/workflows/Python%20CI/badge.svg?branch=main
+.. |ci-badge| image:: https://github.com/eduNEXT/openedx-filters-samples/workflows/Python%20CI/badge.svg?branch=main
     :target: https://github.com/edx/openedx-filters-samples/actions
     :alt: CI
 
 .. |codecov-badge| image:: https://codecov.io/github/edx/openedx-filters-samples/coverage.svg?branch=main
-    :target: https://codecov.io/github/edx/openedx-filters-samples?branch=main
+    :target: https://codecov.io/github/eduNEXT/openedx-filters-samples?branch=main
     :alt: Codecov
 
 .. |doc-badge| image:: https://readthedocs.org/projects/openedx-filters-samples/badge/?version=latest
@@ -134,5 +126,5 @@ For more information about these options, see the `Getting Help`_ page.
     :alt: Supported Python versions
 
 .. |license-badge| image:: https://img.shields.io/github/license/edx/openedx-filters-samples.svg
-    :target: https://github.com/edx/openedx-filters-samples/blob/main/LICENSE.txt
+    :target: https://github.com/eduNEXT/openedx-filters-samples/blob/main/LICENSE.txt
     :alt: License
