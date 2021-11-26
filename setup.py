@@ -127,4 +127,9 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.8',
     ],
+    entry_points={
+        "lms.djangoapp": [
+            "openedx_filters_samples = openedx_filters_samples.apps:OpenedxFiltersSamplesConfig",
+        ],
+    }
 )
