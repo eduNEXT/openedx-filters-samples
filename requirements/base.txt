@@ -11,9 +11,17 @@ django==3.2.9
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/base.in
     #   openedx-filters
+edx-opaque-keys[django]==2.2.2
+    # via -r requirements/base.in
 openedx-filters @ git+https://github.com/eduNEXT/openedx-filters.git@MJG/1st_filters_batch
     # via -r requirements/base.in
+pbr==5.8.0
+    # via stevedore
+pymongo==3.12.1
+    # via edx-opaque-keys
 pytz==2021.3
     # via django
 sqlparse==0.4.2
     # via django
+stevedore==3.5.0
+    # via edx-opaque-keys

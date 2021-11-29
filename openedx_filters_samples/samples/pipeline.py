@@ -5,13 +5,13 @@ Filters steps exemplifying how to:
     - Halt process
 """
 from openedx_filters import PipelineStep
-from openedx_filters.learning.auth import PreRegisterFilter, PreLoginFilter
+from openedx_filters.learning.auth import PreLoginFilter, PreRegisterFilter
 from openedx_filters.learning.enrollment import PreEnrollmentFilter
 
 
 class ModifyUsernameBeforeRegistration(PipelineStep):
     """
-    Modify user's username appending 'edunext'.
+    Modify user's username appending 'modified'.
 
     Example usage:
 
@@ -21,13 +21,13 @@ class ModifyUsernameBeforeRegistration(PipelineStep):
             "org.openedx.learning.student.registration.requested.v1": {
                 "fail_silently": false,
                 "pipeline": [
-                    "openedx_filters_test_plugin.pipeline.ModifyUsernameBeforeRegistration"
+                    "openedx_filters_samples.samples.pipeline.ModifyUsernameBeforeRegistration"
                 ]
             }
         }
     """
-    def run(self, form_data):
-        username = f"{form_data.get('username')}-edunext"
+    def run(self, form_data):  # pylint: disable=arguments-differ
+        username = f"{form_data.get('username')}-modified"
         form_data["username"] = username
         return {
             "form_data": form_data,
@@ -46,14 +46,15 @@ class ModifyUserProfileBeforeLogin(PipelineStep):
             "org.openedx.learning.student.login.requested.v1": {
                 "fail_silently": false,
                 "pipeline": [
-                    "openedx_filters_test_plugin.pipeline.ModifyUserProfileBeforeLogin"
+                    "openedx_filters_samples.samples.pipeline.ModifyUserProfileBeforeLogin"
                 ]
             }
         }
     """
-    def run(self, user):
+    def run(self, user):  # pylint: disable=arguments-differ
         user.profile.set_meta({"previous_login": str(user.last_login)})
         return {"user": user}
+
 
 class ModifyModeBeforeEnrollment(PipelineStep):
     """
@@ -67,12 +68,12 @@ class ModifyModeBeforeEnrollment(PipelineStep):
             "org.openedx.learning.course.enrollment.started.v1": {
                 "fail_silently": false,
                 "pipeline": [
-                    "openedx_filters_test_plugin.pipeline.ModifyModeBeforeEnrollment"
+                    "openedx_filters_samples.samples.pipeline.ModifyModeBeforeEnrollment"
                 ]
             }
         }
     """
-    def run(self, user, course_key, mode):
+    def run(self, user, course_key, mode):  # pylint: disable=arguments-differ, unused-argument
         return {
             "mode": "honor",
         }
@@ -90,7 +91,7 @@ class NoopFilter(PipelineStep):
             "org.openedx.learning.course.enrollment.started.v1": {
                 "fail_silently": false,
                 "pipeline": [
-                    "openedx_filters_test_plugin.pipeline.NoopFilter"
+                    "openedx_filters_samples.samples.pipeline.NoopFilter"
                 ]
             }
         }
@@ -112,13 +113,13 @@ class StopEnrollment(PipelineStep):
             "org.openedx.learning.course.enrollment.started.v1": {
                 "fail_silently": false,
                 "pipeline": [
-                    "openedx_filters_test_plugin.pipeline.StopEnrollment"
+                    "openedx_filters_samples.samples.pipeline.StopEnrollment"
                 ]
             }
         }
     """
 
-    def run(self, user, course_key, mode):
+    def run(self, user, course_key, mode):  # pylint: disable=arguments-differ
         raise PreEnrollmentFilter.PreventEnrollment("You can't enroll on this course.")
 
 
@@ -134,13 +135,13 @@ class StopRegister(PipelineStep):
             "org.openedx.learning.student.registration.requested.v1": {
                 "fail_silently": false,
                 "pipeline": [
-                    "openedx_filters_test_plugin.pipeline.StopRegister"
+                    "openedx_filters_samples.samples.pipeline.StopRegister"
                 ]
             }
         }
     """
 
-    def run(self, form_data):
+    def run(self, form_data):  # pylint: disable=arguments-differ
         raise PreRegisterFilter.PreventRegister("You can't register on this site.", status_code=403)
 
 
@@ -156,11 +157,11 @@ class StopLogin(PipelineStep):
             "org.openedx.learning.student.login.requested.v1": {
                 "fail_silently": false,
                 "pipeline": [
-                    "openedx_filters_test_plugin.pipeline.StopLogin"
+                    "openedx_filters_samples.samples.pipeline.StopLogin"
                 ]
             }
         }
     """
 
-    def run(self, user):
+    def run(self, user):  # pylint: disable=arguments-differ
         raise PreLoginFilter.PreventLogin("You can't login on this site.")
