@@ -1,3 +1,9 @@
+"""
+Filters steps exemplifying how to:
+    - Modify filter input
+    - No operation
+    - Halt process
+"""
 from openedx_filters import PipelineStep
 from openedx_filters.learning.auth import PreRegisterFilter, PreLoginFilter
 from openedx_filters.learning.enrollment import PreEnrollmentFilter
@@ -5,6 +11,8 @@ from openedx_filters.learning.enrollment import PreEnrollmentFilter
 
 class ModifyUsernameBeforeRegistration(PipelineStep):
     """
+    Modify user's username appending 'edunext'.
+
     Example usage:
 
     Add the following configurations to your configuration file:
@@ -28,6 +36,8 @@ class ModifyUsernameBeforeRegistration(PipelineStep):
 
 class ModifyUserProfileBeforeLogin(PipelineStep):
     """
+    Add previous_login field to the user's profile.
+
     Example usage:
 
     Add the following configurations to your configuration file:
@@ -47,6 +57,8 @@ class ModifyUserProfileBeforeLogin(PipelineStep):
 
 class ModifyModeBeforeEnrollment(PipelineStep):
     """
+    Change enrollment mode to 'honor'.
+
     Example usage:
 
     Add the following configurations to your configuration file:
@@ -68,6 +80,8 @@ class ModifyModeBeforeEnrollment(PipelineStep):
 
 class NoopFilter(PipelineStep):
     """
+    No operation filter step. Continuous without any modification.
+
     Example usage:
 
     Add the following configurations to your configuration file:
@@ -88,6 +102,8 @@ class NoopFilter(PipelineStep):
 
 class StopEnrollment(PipelineStep):
     """
+    Stop enrollment process raising PreventEnrollment exception.
+
     Example usage:
 
     Add the following configurations to your configuration file:
@@ -108,6 +124,8 @@ class StopEnrollment(PipelineStep):
 
 class StopRegister(PipelineStep):
     """
+    Stop registration process raising PreventRegister exception.
+
     Example usage:
 
     Add the following configurations to your configuration file:
@@ -128,6 +146,8 @@ class StopRegister(PipelineStep):
 
 class StopLogin(PipelineStep):
     """
+    Stop login process raising PreventLogin exception.
+
     Example usage:
 
     Add the following configurations to your configuration file:
