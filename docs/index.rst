@@ -6,7 +6,7 @@
 openedx-filters-samples
 =======================
 
-Used to create Open edX Filters steps for testing purposes 
+Used to create Open edX Filters steps for testing purposes
 
 Contents:
 
