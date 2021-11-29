@@ -1,40 +1,56 @@
 openedx-filters-samples
 =============================
 
-|ci-badge| |codecov-badge| |pyversions-badge| |license-badge|
+|ci-badge| |license-badge|
 
 
-Overview (please modify)
-------------------------
+Overview
+---------
 
 Used to create Open edX Filters steps for testing purposes.
 
-Documentation
--------------
 
-(TODO: `Set up documentation <https://openedx.atlassian.net/wiki/spaces/DOC/pages/21627535/Publish+Documentation+on+Read+the+Docs>`_)
+Open edX Filters Steps
+----------------------
+
++-------------------------------------+
+| Filter steps                        |
++=====================================+
+| `ModifyUsernameBeforeRegistration`_ |
++-------------------------------------+
+| `ModifyUserProfileBeforeLogin`_     |
++-------------------------------------+
+| `ModifyModeBeforeEnrollment`_       |
++-------------------------------------+
+| `NoopFilter`_                       |
++-------------------------------------+
+| `StopEnrollment`_                   |
++-------------------------------------+
+| `StopRegister`_                     |
++-------------------------------------+
+| `StopLogin`_                        |
++-------------------------------------+
 
 Development Workflow
 --------------------
 
 One Time Setup
 ~~~~~~~~~~~~~~
-.. code-block::
+.. code-block:: bash
 
   # Clone the repository
   git clone git@github.com:edx/openedx-filters-samples.git
   cd openedx-filters-samples
 
-  # Set up a virtualenv using virtualenvwrapper with the same name as the repo and activate it
-  mkvirtualenv -p python3.8 openedx-filters-samples
+  virtualenv -p python3.8 openedx-filters-samples
 
 
 Every time you develop something in this repo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. code-block::
+.. code-block:: bash
 
   # Activate the virtualenv
-  workon openedx-filters-samples
+  source venv/bin/activate
 
   # Grab the latest code
   git checkout main
@@ -72,50 +88,19 @@ otherwise noted.
 
 Please see `LICENSE.txt <LICENSE.txt>`_ for details.
 
-How To Contribute
------------------
-
-Contributions are very welcome.
-Please read `How To Contribute <https://github.com/edx/edx-platform/blob/master/CONTRIBUTING.rst>`_ for details.
-Even though they were written with ``edx-platform`` in mind, the guidelines
-should be followed for all Open edX projects.
-
-The pull request description template should be automatically applied if you are creating a pull request from GitHub. Otherwise you
-can find it at `PULL_REQUEST_TEMPLATE.md <.github/PULL_REQUEST_TEMPLATE.md>`_.
-
-The issue report template should be automatically applied if you are creating an issue on GitHub as well. Otherwise you
-can find it at `ISSUE_TEMPLATE.md <.github/ISSUE_TEMPLATE.md>`_.
-
-Reporting Security Issues
--------------------------
-
-Please do not report security issues in public. Please email security@edx.org.
-
-Getting Help
-------------
-
-If you're having trouble, we have discussion forums at https://discuss.openedx.org where you can connect with others in the community.
-
-Our real-time conversations are on Slack. You can request a `Slack invitation`_, then join our `community Slack workspace`_.
-
-For more information about these options, see the `Getting Help`_ page.
-
-.. _Slack invitation: https://openedx-slack-invite.herokuapp.com/
-.. _community Slack workspace: https://openedx.slack.com/
-.. _Getting Help: https://openedx.org/getting-help
 
 .. |ci-badge| image:: https://github.com/eduNEXT/openedx-filters-samples/workflows/Python%20CI/badge.svg?branch=main
-    :target: https://github.com/edx/openedx-filters-samples/actions
+    :target: https://github.com/eduNEXT/openedx-filters-samples/actions
     :alt: CI
 
-.. |codecov-badge| image:: https://codecov.io/github/edx/openedx-filters-samples/coverage.svg?branch=main
-    :target: https://codecov.io/github/eduNEXT/openedx-filters-samples?branch=main
-    :alt: Codecov
-
-.. |pyversions-badge| image:: https://img.shields.io/pypi/pyversions/openedx-filters-samples.svg
-    :target: https://pypi.python.org/pypi/openedx-filters-samples/
-    :alt: Supported Python versions
-
-.. |license-badge| image:: https://img.shields.io/github/license/edx/openedx-filters-samples.svg
+.. |license-badge| image:: https://img.shields.io/github/license/eduNEXT/openedx-filters-samples.svg
     :target: https://github.com/eduNEXT/openedx-filters-samples/blob/main/LICENSE.txt
     :alt: License
+
+.. _ModifyUsernameBeforeRegistration: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L16
+.. _ModifyUserProfileBeforeLogin: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L41
+.. _ModifyModeBeforeEnrollment: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L63
+.. _NoopFilter: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L86
+.. _StopEnrollment: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L108
+.. _StopRegister: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L130
+.. _StopLogin: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L152
