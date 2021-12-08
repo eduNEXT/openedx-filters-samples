@@ -164,4 +164,6 @@ class StopLogin(PipelineStep):
     """
 
     def run(self, user):  # pylint: disable=arguments-differ
-        raise PreLoginFilter.PreventLogin("You can't login on this site.")
+        raise PreLoginFilter.PreventLogin(
+            "You can't login on this site.", redirect_to="", error_code="pre-register-login-forbidden"
+        )
