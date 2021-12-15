@@ -26,7 +26,7 @@ class ModifyUsernameBeforeRegistration(PipelineStep):
             }
         }
     """
-    def run(self, form_data):  # pylint: disable=arguments-differ
+    def run_filter(self, form_data):  # pylint: disable=arguments-differ
         username = f"{form_data.get('username')}-modified"
         form_data["username"] = username
         return {
@@ -51,7 +51,7 @@ class ModifyUserProfileBeforeLogin(PipelineStep):
             }
         }
     """
-    def run(self, user):  # pylint: disable=arguments-differ
+    def run_filter(self, user):  # pylint: disable=arguments-differ
         user.profile.set_meta({"previous_login": str(user.last_login)})
         return {"user": user}
 
@@ -73,7 +73,7 @@ class ModifyModeBeforeEnrollment(PipelineStep):
             }
         }
     """
-    def run(self, user, course_key, mode):  # pylint: disable=arguments-differ, unused-argument
+    def run_filter(self, user, course_key, mode):  # pylint: disable=arguments-differ, unused-argument
         return {
             "mode": "honor",
         }
@@ -97,7 +97,7 @@ class NoopFilter(PipelineStep):
         }
     """
 
-    def run(self, **kwargs):
+    def run_filter(self, **kwargs):
         return {}
 
 
@@ -119,7 +119,7 @@ class StopEnrollment(PipelineStep):
         }
     """
 
-    def run(self, user, course_key, mode):  # pylint: disable=arguments-differ
+    def run_filter(self, user, course_key, mode):  # pylint: disable=arguments-differ
         raise PreEnrollmentFilter.PreventEnrollment("You can't enroll on this course.")
 
 
@@ -141,7 +141,7 @@ class StopRegister(PipelineStep):
         }
     """
 
-    def run(self, form_data):  # pylint: disable=arguments-differ
+    def run_filter(self, form_data):  # pylint: disable=arguments-differ
         raise PreRegisterFilter.PreventRegister("You can't register on this site.", status_code=403)
 
 
@@ -163,7 +163,7 @@ class StopLogin(PipelineStep):
         }
     """
 
-    def run(self, user):  # pylint: disable=arguments-differ
+    def run_filter(self, user):  # pylint: disable=arguments-differ
         raise PreLoginFilter.PreventLogin(
             "You can't login on this site.", redirect_to="", error_code="pre-register-login-forbidden"
         )

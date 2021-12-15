@@ -3,4 +3,4 @@
 
 Django>=2.2              # Web application framework
 edx-opaque-keys[django]
-git+https://github.com/eduNEXT/openedx-filters.git@MJG/1st_filters_batch#egg=openedx_filters==0.4.0_alpha      # Open edX Filters from Hooks Extension Framework (OEP-50)
+openedx-filters         # Open edX Filters from Hooks Extension Framework (OEP-50)

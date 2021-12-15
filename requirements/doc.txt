@@ -20,7 +20,7 @@ bleach==4.1.0
     # via readme-renderer
 certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.8
+charset-normalizer==2.0.9
     # via requests
 click==8.0.3
     # via
@@ -32,7 +32,7 @@ coverage[toml]==6.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-django==3.2.9
+django==3.2.10
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/test.txt
@@ -66,7 +66,7 @@ markupsafe==2.0.1
     # via
     #   -r requirements/test.txt
     #   jinja2
-openedx-filters @ git+https://github.com/eduNEXT/openedx-filters.git@MJG/1st_filters_batch
+openedx-filters==0.4.0
     # via -r requirements/test.txt
 packaging==21.3
     # via
@@ -91,7 +91,7 @@ pygments==2.10.0
     #   doc8
     #   readme-renderer
     #   sphinx
-pymongo==3.12.1
+pymongo==4.0.1
     # via
     #   -r requirements/test.txt
     #   edx-opaque-keys
@@ -106,7 +106,7 @@ pytest==6.2.5
     #   pytest-django
 pytest-cov==3.0.0
     # via -r requirements/test.txt
-pytest-django==4.4.0
+pytest-django==4.5.2
     # via -r requirements/test.txt
 python-slugify==5.0.2
     # via
@@ -121,7 +121,7 @@ pyyaml==6.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
-readme-renderer==30.0
+readme-renderer==32.0
     # via -r requirements/doc.in
 requests==2.26.0
     # via sphinx
@@ -167,7 +167,7 @@ toml==0.10.2
     # via
     #   -r requirements/test.txt
     #   pytest
-tomli==1.2.2
+tomli==2.0.0
     # via
     #   -r requirements/test.txt
     #   coverage
