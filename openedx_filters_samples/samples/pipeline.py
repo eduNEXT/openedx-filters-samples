@@ -5,8 +5,7 @@ Filters steps exemplifying how to:
     - Halt process
 """
 from openedx_filters import PipelineStep
-from openedx_filters.learning.auth import PreLoginFilter, PreRegisterFilter
-from openedx_filters.learning.enrollment import PreEnrollmentFilter
+from openedx_filters.learning.filters import PreEnrollmentFilter, PreLoginFilter, PreRegisterFilter
 
 
 class ModifyUsernameBeforeRegistration(PipelineStep):
