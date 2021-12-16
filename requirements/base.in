@@ -3,4 +3,4 @@
 
 Django>=2.2              # Web application framework
 edx-opaque-keys[django]
-openedx-filters         # Open edX Filters from Hooks Extension Framework (OEP-50)
+openedx-filters          # Open edX Filters from Hooks Extension Framework (OEP-50)

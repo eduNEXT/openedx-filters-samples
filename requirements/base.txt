@@ -13,7 +13,7 @@ django==3.2.10
     #   openedx-filters
 edx-opaque-keys[django]==2.2.2
     # via -r requirements/base.in
-openedx-filters==0.4.0
+openedx-filters==0.4.1
     # via -r requirements/base.in
 pbr==5.8.0
     # via stevedore

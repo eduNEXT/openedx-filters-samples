@@ -87,7 +87,7 @@ markupsafe==2.0.1
     #   jinja2
 mccabe==0.6.1
     # via pylint
-openedx-filters==0.4.0
+openedx-filters==0.4.1
     # via -r requirements/test.txt
 packaging==21.3
     # via
