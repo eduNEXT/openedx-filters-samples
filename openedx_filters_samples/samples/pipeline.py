@@ -5,7 +5,7 @@ Filters steps exemplifying how to:
     - Halt process
 """
 from openedx_filters import PipelineStep
-from openedx_filters.learning.filters import PreEnrollmentFilter, PreLoginFilter, PreRegisterFilter
+from openedx_filters.learning.filters import CourseEnrollmentStarted, StudentLoginRequested, StudentRegistrationRequested
 
 
 class ModifyUsernameBeforeRegistration(PipelineStep):
@@ -119,7 +119,7 @@ class StopEnrollment(PipelineStep):
     """
 
     def run_filter(self, user, course_key, mode):  # pylint: disable=arguments-differ
-        raise PreEnrollmentFilter.PreventEnrollment("You can't enroll on this course.")
+        raise CourseEnrollmentStarted.PreventEnrollment("You can't enroll on this course.")
 
 
 class StopRegister(PipelineStep):
@@ -141,7 +141,7 @@ class StopRegister(PipelineStep):
     """
 
     def run_filter(self, form_data):  # pylint: disable=arguments-differ
-        raise PreRegisterFilter.PreventRegister("You can't register on this site.", status_code=403)
+        raise StudentRegistrationRequested.PreventRegistration("You can't register on this site.", status_code=403)
 
 
 class StopLogin(PipelineStep):
@@ -163,6 +163,6 @@ class StopLogin(PipelineStep):
     """
 
     def run_filter(self, user):  # pylint: disable=arguments-differ
-        raise PreLoginFilter.PreventLogin(
+        raise StudentLoginRequested.PreventLogin(
             "You can't login on this site.", redirect_to="", error_code="pre-register-login-forbidden"
         )
