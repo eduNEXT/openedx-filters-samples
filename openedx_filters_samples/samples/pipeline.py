@@ -5,7 +5,11 @@ Filters steps exemplifying how to:
     - Halt process
 """
 from openedx_filters import PipelineStep
-from openedx_filters.learning.filters import CourseEnrollmentStarted, StudentLoginRequested, StudentRegistrationRequested
+from openedx_filters.learning.filters import (
+    CourseEnrollmentStarted,
+    StudentLoginRequested,
+    StudentRegistrationRequested,
+)
 
 
 class ModifyUsernameBeforeRegistration(PipelineStep):

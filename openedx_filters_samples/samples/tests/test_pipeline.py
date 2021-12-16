@@ -6,7 +6,11 @@ from unittest.mock import MagicMock
 
 from django.test import TestCase, override_settings
 from opaque_keys.edx.keys import CourseKey
-from openedx_filters.learning.filters import CourseEnrollmentStarted, StudentLoginRequested, StudentRegistrationRequested
+from openedx_filters.learning.filters import (
+    CourseEnrollmentStarted,
+    StudentLoginRequested,
+    StudentRegistrationRequested,
+)
 
 
 class SampleStepsTestCase(TestCase):
