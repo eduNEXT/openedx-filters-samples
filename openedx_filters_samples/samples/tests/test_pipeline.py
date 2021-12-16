@@ -6,8 +6,7 @@ from unittest.mock import MagicMock
 
 from django.test import TestCase, override_settings
 from opaque_keys.edx.keys import CourseKey
-from openedx_filters.learning.auth import PreLoginFilter, PreRegisterFilter
-from openedx_filters.learning.enrollment import PreEnrollmentFilter
+from openedx_filters.learning.filters import CourseEnrollmentStarted, StudentLoginRequested, StudentRegistrationRequested
 
 
 class SampleStepsTestCase(TestCase):
@@ -41,7 +40,7 @@ class SampleStepsTestCase(TestCase):
             "username": "test_username-modified"
         }
 
-        result = PreRegisterFilter.run(form_data=self.registration_form)
+        result = StudentRegistrationRequested.run_filter(form_data=self.registration_form)
 
         self.assertDictEqual(expected_result, result)
 
@@ -59,8 +58,8 @@ class SampleStepsTestCase(TestCase):
         """
         Test that the user's registration stops.
         """
-        with self.assertRaises(PreRegisterFilter.PreventRegister):
-            PreRegisterFilter.run(form_data=self.registration_form)
+        with self.assertRaises(StudentRegistrationRequested.PreventRegistration):
+            StudentRegistrationRequested.run_filter(form_data=self.registration_form)
 
     @override_settings(
         OPEN_EDX_FILTERS_CONFIG={
@@ -76,7 +75,7 @@ class SampleStepsTestCase(TestCase):
         """
         Test that the user's username is modified before registration.
         """
-        user = PreLoginFilter.run(user=self.user)
+        user = StudentLoginRequested.run_filter(user=self.user)
 
         user.profile.set_meta.assert_called_once_with(
             {
@@ -98,8 +97,8 @@ class SampleStepsTestCase(TestCase):
         """
         Test that the user's login stops.
         """
-        with self.assertRaises(PreLoginFilter.PreventLogin):
-            PreLoginFilter.run(user=self.user)
+        with self.assertRaises(StudentLoginRequested.PreventLogin):
+            StudentLoginRequested.run_filter(user=self.user)
 
     @override_settings(
         OPEN_EDX_FILTERS_CONFIG={
@@ -121,7 +120,7 @@ class SampleStepsTestCase(TestCase):
             "honor",
         )
 
-        result = PreEnrollmentFilter.run(
+        result = CourseEnrollmentStarted.run_filter(
             user=self.user, course_key=self.course_key, mode="audit",
         )
 
@@ -141,7 +140,7 @@ class SampleStepsTestCase(TestCase):
         """
         Test that the user's enrollment stops.
         """
-        with self.assertRaises(PreEnrollmentFilter.PreventEnrollment):
-            PreEnrollmentFilter.run(
+        with self.assertRaises(CourseEnrollmentStarted.PreventEnrollment):
+            CourseEnrollmentStarted.run_filter(
                 user=self.user, course_key=self.course_key, mode="audit",
             )
