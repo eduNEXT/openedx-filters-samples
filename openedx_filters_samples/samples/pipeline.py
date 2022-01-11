@@ -56,6 +56,7 @@ class ModifyUserProfileBeforeLogin(PipelineStep):
     """
     def run_filter(self, user):  # pylint: disable=arguments-differ
         user.profile.set_meta({"previous_login": str(user.last_login)})
+        user.profile.save()
         return {"user": user}
 
 
