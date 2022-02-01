@@ -107,7 +107,7 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
             }
         }
     """
-    def run_filter(self, user, course_id, mode, status):  # pylint: disable=arguments-differ
+    def run_filter(self, user, course_id, mode, status):  # pylint: disable=arguments-differ, unused-argument
         if mode == 'honor':
             return {
                 'mode': 'no-id-professional',
