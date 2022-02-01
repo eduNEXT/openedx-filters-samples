@@ -22,13 +22,27 @@ Open edX Filters Steps
 +-------------------------------------+
 | `ModifyModeBeforeEnrollment`_       |
 +-------------------------------------+
-| `NoopFilter`_                       |
+| `ModifyContextBeforeRender`_        |
 +-------------------------------------+
 | `StopEnrollment`_                   |
 +-------------------------------------+
 | `StopRegister`_                     |
 +-------------------------------------+
 | `StopLogin`_                        |
++-------------------------------------+
+| `StopUnenrollment`_                 |
++-------------------------------------+
+| `StopCertificateCreation`_          |
++-------------------------------------+
+| `StopCourseAboutRendering`_         |
++-------------------------------------+
+| `StopCourseHomeRendering`_          |
++-------------------------------------+
+| `StopDashboardRender`_              |
++-------------------------------------+
+| `StopCertificateRender`_            |
++-------------------------------------+
+| `StopCohortChange`_                 |
 +-------------------------------------+
 
 Development Workflow
@@ -97,10 +111,18 @@ Please see `LICENSE.txt <LICENSE.txt>`_ for details.
     :target: https://github.com/eduNEXT/openedx-filters-samples/blob/main/LICENSE.txt
     :alt: License
 
-.. _ModifyUsernameBeforeRegistration: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L16
-.. _ModifyUserProfileBeforeLogin: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L41
-.. _ModifyModeBeforeEnrollment: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L63
-.. _NoopFilter: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L86
-.. _StopEnrollment: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L108
-.. _StopRegister: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L130
-.. _StopLogin: https://github.com/eduNEXT/openedx-filters-samples/blob/b7e6e32c577df9e107081bb4835bd48ccd808dfd/openedx_filters_samples/samples/pipeline.py#L152
+.. _ModifyUsernameBeforeRegistration: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L16
+.. _ModifyUserProfileBeforeLogin: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L41
+.. _ModifyModeBeforeEnrollment: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L63
+.. _ModifyContextBeforeRender: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L118
+.. _NoopFilter: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L86
+.. _StopEnrollment: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L108
+.. _StopRegister: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L130
+.. _StopLogin: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L152
+.. _StopUnenrollment: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L236
+.. _StopCertificateCreation: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L259
+.. _StopCourseAboutRendering: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L282
+.. _StopCourseHomeRendering: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L303
+.. _StopDashboardRender: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L324
+.. _StopCertificateRender: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L345
+.. _StopCohortChange: https://github.com/eduNEXT/openedx-filters-samples/blob/master/openedx_filters_samples/samples/pipeline.py#L366
