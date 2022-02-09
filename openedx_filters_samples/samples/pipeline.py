@@ -139,6 +139,57 @@ class ModifyContextBeforeRender(PipelineStep):
         }
 
 
+class ModifyUserProfileBeforeUnenrollment(PipelineStep):
+    """
+    Add unenrolled_from field to the user's profile.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.course.unenrollment.started.v1": {
+                "fail_silently": false,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.ModifyUserProfileBeforeUnenrollment"
+                ]
+            }
+        }
+    """
+    def run_filter(self, enrollment):  # pylint: disable=arguments-differ
+        enrollment.user.profile.set_meta({"unenrolled_from": str(enrollment.course_id)})
+        enrollment.user.profile.save()
+        return {}
+
+
+class ModifyUserProfileBeforeCohortChange(PipelineStep):
+    """
+    Add cohort_info field to the user's profile.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.cohort.change.requested.v1": {
+                "fail_silently": false,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.ModifyUserProfileBeforeCohortChange"
+                ]
+            }
+        }
+    """
+    def run_filter(self, membership, cohort):  # pylint: disable=arguments-differ
+        user = membership.user
+        user.profile.set_meta(
+            {
+                "cohort_info": f"Changed from Cohort {str(membership.course_user_group)} to Cohort {str(cohort)}"
+            }
+        )
+        user.profile.save()
+        return {}
+
+
 class NoopFilter(PipelineStep):
     """
     No operation filter step. Continuous without any modification.
