@@ -36,8 +36,7 @@ class ModifyUsernameBeforeRegistration(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        form_data = kwargs.get("form_data")
+    def run_filter(self, form_data, *args, **kwargs):  # pylint: disable=arguments-differ
         username = f"{form_data.get('username')}-modified"
         form_data["username"] = username
         return {
@@ -62,8 +61,7 @@ class ModifyUserProfileBeforeLogin(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        user = kwargs.get("user")
+    def run_filter(self, user, *args, **kwargs):  # pylint: disable=arguments-differ
         user.profile.set_meta({"previous_login": str(user.last_login)})
         user.profile.save()
         return {"user": user}
@@ -86,7 +84,7 @@ class ModifyModeBeforeEnrollment(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ, unused-argument
+    def run_filter(self, user, course_key, mode, *args, **kwargs):  # pylint: disable=arguments-differ, unused-argument
         return {
             "mode": "honor",
         }
@@ -109,8 +107,7 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ, unused-argument
-        mode = kwargs.get("mode")
+    def run_filter(self, user, course_id, mode, status, *args, **kwargs):  # pylint: disable=arguments-differ, unused-argument
         if mode == 'honor':
             return {
                 'mode': 'no-id-professional',
@@ -135,8 +132,7 @@ class ModifyContextBeforeRender(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        context = kwargs.get("context")
+    def run_filter(self, context, *args, **kwargs):  # pylint: disable=arguments-differ
         context['context_modified'] = True
         return {
             'context': context,
@@ -160,8 +156,7 @@ class ModifyUserProfileBeforeUnenrollment(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        enrollment = kwargs.get("enrollment")
+    def run_filter(self, enrollment, *args, **kwargs):  # pylint: disable=arguments-differ
         enrollment.user.profile.set_meta({"unenrolled_from": str(enrollment.course_id)})
         enrollment.user.profile.save()
         return {}
@@ -184,13 +179,11 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        membership = kwargs.get("current_membership")
-        cohort = kwargs.get("target_cohort")
-        user = membership.user
+    def run_filter(self, current_membership, target_cohort, *args, **kwargs):  # pylint: disable=arguments-differ
+        user = current_membership.user
         user.profile.set_meta(
             {
-                "cohort_info": f"Changed from Cohort {str(membership.course_user_group)} to Cohort {str(cohort)}"
+                "cohort_info": f"Changed from Cohort {str(current_membership.course_user_group)} to Cohort {str(target_cohort)}"
             }
         )
         user.profile.save()
@@ -281,7 +274,7 @@ class StopLogin(PipelineStep):
         }
     """
 
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, user, *args, **kwargs):  # pylint: disable=arguments-differ
         raise StudentLoginRequested.PreventLogin(
             "You can't login on this site.", redirect_to="", error_code="pre-register-login-forbidden"
         )
@@ -304,7 +297,7 @@ class StopUnenrollment(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, enrollment, *args, **kwargs):  # pylint: disable=arguments-differ
         raise CourseUnenrollmentStarted.PreventUnenrollment(
             "You can't un-enroll from this site."
         )
@@ -327,7 +320,7 @@ class StopCertificateCreation(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, user, course_id, mode, status, *args, **kwargs):  # pylint: disable=arguments-differ
         raise CertificateCreationRequested.PreventCertificateCreation(
             "You can't generate a certificate from this site."
         )
@@ -350,7 +343,7 @@ class StopCourseAboutRendering(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
         raise CourseAboutRenderStarted.PreventCourseAboutRender("You can't view this course.")
 
 
@@ -371,7 +364,7 @@ class StopCourseHomeRendering(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
         raise CourseHomeRenderStarted.PreventCourseHomeRender("You can't view this course.")
 
 
@@ -392,7 +385,7 @@ class StopDashboardRender(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
         raise DashboardRenderStarted.PreventDashboardRender("You can't access the dashboard right now.",)
 
 
@@ -413,7 +406,7 @@ class StopCertificateRender(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, context, custom_template, *args, **kwargs):  # pylint: disable=arguments-differ
         raise CertificateRenderStarted.PreventCertificateRender("You can't view this certificate.")
 
 
@@ -434,5 +427,5 @@ class StopCohortChange(PipelineStep):
             }
         }
     """
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, current_membership, target_cohort, *args, **kwargs):  # pylint: disable=arguments-differ
         raise CohortChangeRequested.PreventCohortChange("You can't change cohorts.")
