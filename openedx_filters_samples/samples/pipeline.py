@@ -344,7 +344,12 @@ class StopCourseAboutRendering(PipelineStep):
         }
     """
     def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise CourseAboutRenderStarted.PreventCourseAboutRender("You can't view this course.")
+        template_context = {}
+        raise CourseAboutRenderStarted.PreventCourseAboutRender(
+            "You can't view this course.",
+            course_about_template='courseware/custom_course_about_alternative.html',
+            template_context=context,
+        )
 
 
 class StopCourseHomeRendering(PipelineStep):
@@ -365,7 +370,11 @@ class StopCourseHomeRendering(PipelineStep):
         }
     """
     def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise CourseHomeRenderStarted.PreventCourseHomeRender("You can't view this course.")
+        raise CourseHomeRenderStarted.PreventCourseHomeRender(
+            "You can't view this course.",
+            course_home_template='course_experience/custom-course-home-fragment.html',
+            template_context=context,
+        )
 
 
 class StopDashboardRender(PipelineStep):
@@ -386,7 +395,11 @@ class StopDashboardRender(PipelineStep):
         }
     """
     def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise DashboardRenderStarted.PreventDashboardRender("You can't access the dashboard right now.",)
+        raise DashboardRenderStarted.PreventDashboardRender(
+            "You can't access the dashboard right now.",
+            dashboard_template='custom-dashboard-template.html',
+            template_context=context,
+        )
 
 
 class StopCertificateRender(PipelineStep):
@@ -407,7 +420,10 @@ class StopCertificateRender(PipelineStep):
         }
     """
     def run_filter(self, context, custom_template, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise CertificateRenderStarted.PreventCertificateRender("You can't view this certificate.")
+        raise CertificateRenderStarted.PreventCertificateRender(
+            "You can't view this certificate.",
+            invalid_cert_path="custom.invalid.cert.template.path",
+        )
 
 
 class StopCohortChange(PipelineStep):
