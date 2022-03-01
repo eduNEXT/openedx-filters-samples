@@ -397,9 +397,62 @@ class StopDashboardRender(PipelineStep):
     def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
         raise DashboardRenderStarted.PreventDashboardRender(
             "You can't access the dashboard right now.",
-            dashboard_template='custom-dashboard-template.html',
+            dashboard_template="static_templates/server-error.html",
             template_context=context,
         )
+
+
+class RedirectFromDashboard(PipelineStep):
+    """
+    Stop dashboard render raising RedirectDashboardPage exception.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.dashboard.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RedirectFromDashboard"
+                ]
+            }
+        }
+    """
+    def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
+        raise DashboardRenderStarted.RedirectDashboardPage(
+            "You can't see this site's dashboard, redirecting to the correct location.",
+            redirect_to="https://custom-lms-dashboard.com",
+        )
+
+class FilterEnrollmentDashboard(PipelineStep):
+    """
+    Filter enrollment list by a condition.
+    """
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """
+        Pipeline steps that changes certificate mode from honor to no-id-professional.
+
+        Example usage:
+
+        Add the following configurations to your configuration file:
+
+            "OPEN_EDX_FILTERS_CONFIG": {
+                "org.openedx.learning.dashboard.render.started.v1": {
+                    "fail_silently": False,
+                    "pipeline": [
+                        "openedx_filters_samples.samples.pipeline.FilterEnrollmentDashboard"
+                    ]
+                }
+            }
+        """
+        context["course_enrollments"] = [
+            course for course in context["course_enrollments"] if course.course_id.org != "edX"
+        ]
+        return {
+            "context": context, template_name: template_name,
+        }
 
 
 class StopCertificateRender(PipelineStep):
