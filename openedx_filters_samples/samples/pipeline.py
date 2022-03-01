@@ -344,7 +344,6 @@ class StopCourseAboutRendering(PipelineStep):
         }
     """
     def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
-        template_context = {}
         raise CourseAboutRenderStarted.PreventCourseAboutRender(
             "You can't view this course.",
             course_about_template='courseware/custom_course_about_alternative.html',
@@ -375,6 +374,66 @@ class StopCourseHomeRendering(PipelineStep):
             course_home_template='course_experience/custom-course-home-fragment.html',
             template_context=context,
         )
+
+
+class RedirectCourseHomeRendering(PipelineStep):
+    """
+    Stop course about render raising PreventCourseAboutRender exception.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RedirectCourseHomeRendering"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """
+        Pipeline step that redirects to the course survey.
+
+        When raising RedirectCourseHomePage, this filter uses a redirect_to field handled by
+        the course home view that redirects to the URL indicated.
+        """
+        raise CourseHomeRenderStarted.RedirectCourseHomePage(
+            "You can't access this courses home page, redirecting to the correct location.",
+            redirect_to="https://course-home-elsewhere.com",
+        )
+
+
+class ModifyUpdatesFromCourse(PipelineStep):
+    """
+    Modifies any update from course when rendering the home page.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.ModifyUpdatesFromCourse"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """Pipeline that modifies any update messages."""
+        update_message = context["update_message_fragment"]
+        if update_message:
+            update_message.content = "<p>This is a simple message</p>"
+        return {
+            "context": context, template_name: template_name,
+        }
+
 
 
 class StopDashboardRender(PipelineStep):
