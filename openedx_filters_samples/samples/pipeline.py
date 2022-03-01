@@ -426,6 +426,58 @@ class StopCertificateRender(PipelineStep):
         )
 
 
+class RenderCustomCertificateStep(PipelineStep):
+    """
+    Step that modifies the certificate rendering process by creating a custom template.
+    """
+
+    def run_filter(self, context, custom_template):  # pylint: disable=arguments-differ
+        """
+        Pipeline steps that gets or creates a new custom template to render instead
+        of the original.
+        """
+        from opaque_keys.edx.keys import CourseKey
+
+        course_key = CourseKey.from_string(context["course_id"])
+        custom_template = self._get_or_create_custom_template(mode='honor', course_key=course_key)
+        return {"custom_template": custom_template}
+
+    def _get_or_create_custom_template(self, org_id=None, mode=None, course_key=None, language=None):
+        """
+        Creates a custom certificate template entry in DB.
+        """
+        from lms.djangoapps.certificates.models import CertificateTemplate
+
+        template_html = """
+            <%namespace name='static' file='static_content.html'/>
+            <html>
+            <body>
+                lang: ${LANGUAGE_CODE}
+                course name: ${accomplishment_copy_course_name}
+                mode: ${course_mode}
+                ${accomplishment_copy_course_description}
+                ${twitter_url}
+                <img class="custom-logo" src="test-logo.png" />
+            </body>
+            </html>
+        """
+        template = CertificateTemplate.objects.filter(course_key=course_key)
+        if bool(template):
+            return template.first()
+
+        template = CertificateTemplate(
+            name='custom template',
+            template=template_html,
+            organization_id=org_id,
+            course_key=course_key,
+            mode=mode,
+            is_active=True,
+            language=language
+        )
+        template.save()
+        return template
+
+
 class StopCohortChange(PipelineStep):
     """
     Stop cohort change process raising PreventCohortChange exception.
