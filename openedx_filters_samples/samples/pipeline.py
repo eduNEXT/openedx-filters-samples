@@ -667,3 +667,29 @@ class RedirectCustomCourseAbout(PipelineStep):
             "You can't access this courses about page, redirecting to the correct location.",
             redirect_to="https://custom-course-about.com",
         )
+
+
+class RedirectToCustomCertificate(PipelineStep):
+    """
+    Redirect to custom certificate.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.certificate.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RenderCustomCertificateStep"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, custom_template):  # pylint: disable=arguments-differ
+        """Pipeline step that redirects before rendering the certificate."""
+        raise CertificateRenderStarted.RedirectCertificateRender(
+            "You can't generate a certificate from this site, redirecting to the correct location.",
+            redirect_to="https://certificate.pdf",
+        )
