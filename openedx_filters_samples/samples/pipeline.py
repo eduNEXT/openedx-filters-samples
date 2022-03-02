@@ -541,6 +541,19 @@ class StopCertificateRender(PipelineStep):
 class RenderCustomCertificateStep(PipelineStep):
     """
     Step that modifies the certificate rendering process by creating a custom template.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.certificate.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RenderCustomCertificateStep"
+                ]
+            }
+        }
     """
 
     def run_filter(self, context, custom_template):  # pylint: disable=arguments-differ
