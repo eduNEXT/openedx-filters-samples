@@ -609,3 +609,61 @@ class StopCohortChange(PipelineStep):
     """
     def run_filter(self, current_membership, target_cohort, *args, **kwargs):  # pylint: disable=arguments-differ
         raise CohortChangeRequested.PreventCohortChange("You can't change cohorts.")
+
+
+class StaffViewCourseAbout(PipelineStep):
+    """
+    Give to student staff view in course about.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.StaffViewCourseAbout"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """Pipeline that gives staff view to the current user."""
+        context["staff_access"] = True
+        context["studio_url"] = "http://studio.com"
+        return {
+            "context": context, template_name: template_name,
+        }
+
+
+class RedirectCustomCourseAbout(PipelineStep):
+    """
+    Redirect to custom course about.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+            "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RedirectCustomCourseAbout"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """
+        Pipeline step that redirects to the course survey.
+
+        When raising RedirectCourseAboutPage, this filter uses a redirect_to field handled by
+        the course about view that redirects to that URL.
+        """
+        raise CourseAboutRenderStarted.RedirectCourseAboutPage(
+            "You can't access this courses about page, redirecting to the correct location.",
+            redirect_to="https://custom-course-about.com",
+        )
