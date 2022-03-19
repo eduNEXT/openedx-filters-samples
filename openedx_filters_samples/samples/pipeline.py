@@ -320,7 +320,7 @@ class StopCertificateCreation(PipelineStep):
             }
         }
     """
-    def run_filter(self, user, course_id, mode, status, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, user, course_key, mode, status, grade, generation_mode, *args, **kwargs):  # pylint: disable=arguments-differ
         raise CertificateCreationRequested.PreventCertificateCreation(
             "You can't generate a certificate from this site."
         )
