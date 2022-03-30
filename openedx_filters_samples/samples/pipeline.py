@@ -356,7 +356,7 @@ class RenderResponseCourseAbout(PipelineStep):
 
         raise CourseAboutRenderStarted.RenderCustomResponse(
             "You can't access this courses home page, redirecting to the correct location.",
-            response="https://course-home-elsewhere.com",
+            response=response,
         )
 
 
