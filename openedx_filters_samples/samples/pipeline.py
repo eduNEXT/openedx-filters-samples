@@ -4,6 +4,7 @@ Filters steps exemplifying how to:
     - No operation
     - Halt process
 """
+from django.http import HttpResponse
 from openedx_filters import PipelineStep
 from openedx_filters.learning.filters import (
     CertificateCreationRequested,
@@ -326,9 +327,9 @@ class StopCertificateCreation(PipelineStep):
         )
 
 
-class StopCourseAboutRendering(PipelineStep):
+class RenderResponseCourseAbout(PipelineStep):
     """
-    Stop course about render raising PreventCourseAboutRender exception.
+    Stop course about render raising RenderCustomResponse exception.
 
     Example usage:
 
@@ -338,16 +339,88 @@ class StopCourseAboutRendering(PipelineStep):
             "org.openedx.learning.course_about.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.StopCourseAboutRendering"
+                    "openedx_filters_samples.samples.pipeline.RenderResponseCourseAbout"
                 ]
             }
         }
     """
-    def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise CourseAboutRenderStarted.PreventCourseAboutRender(
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """
+        Pipeline step that redirects to the course survey.
+
+        When raising RedirectCourseHomePage, this filter uses a redirect_to field handled by
+        the course home view that redirects to the URL indicated.
+        """
+        response = HttpResponse("Here's the text of the web page.")
+
+        raise CourseAboutRenderStarted.RenderCustomResponse(
+            "You can't access this courses home page, redirecting to the correct location.",
+            response="https://course-home-elsewhere.com",
+        )
+
+
+class RenderAlternativeCourseAbout(PipelineStep):
+    """
+    Stop course about render raising RenderCustomResponse exception.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RenderAlternativeCourseAbout"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """
+        Pipeline step that renders a custom template.
+
+        When raising RedirectCourseHomePage, this filter uses a redirect_to field handled by
+        the course home view that redirects to the URL indicated.
+        """
+        raise CourseAboutRenderStarted.RenderAlternativeCourseAbout(
             "You can't view this course.",
-            course_about_template='courseware/custom_course_about_alternative.html',
+            course_about_template='custom-course-about-template.html',
             template_context=context,
+        )
+
+
+
+class RedirectCustomCourseAbout(PipelineStep):
+    """
+    Redirect to custom course about.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+            "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RedirectCustomCourseAbout"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """
+        Pipeline step that redirects to the course survey.
+
+        When raising RedirectCourseAboutPage, this filter uses a redirect_to field handled by
+        the course about view that redirects to that URL.
+        """
+        raise CourseAboutRenderStarted.RedirectToPage(
+            "You can't access this courses about page, redirecting to the correct location.",
+            redirect_to="https://custom-course-about.com",
         )
 
 
@@ -373,37 +446,6 @@ class StopCourseHomeRendering(PipelineStep):
             "You can't view this course.",
             course_home_template='course_experience/custom-course-home-fragment.html',
             template_context=context,
-        )
-
-
-class RedirectCourseHomeRendering(PipelineStep):
-    """
-    Stop course about render raising PreventCourseAboutRender exception.
-
-    Example usage:
-
-    Add the following configurations to your configuration file:
-
-        "OPEN_EDX_FILTERS_CONFIG": {
-            "org.openedx.learning.course_about.render.started.v1": {
-                "fail_silently": False,
-                "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.RedirectCourseHomeRendering"
-                ]
-            }
-        }
-    """
-
-    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
-        """
-        Pipeline step that redirects to the course survey.
-
-        When raising RedirectCourseHomePage, this filter uses a redirect_to field handled by
-        the course home view that redirects to the URL indicated.
-        """
-        raise CourseHomeRenderStarted.RedirectCourseHomePage(
-            "You can't access this courses home page, redirecting to the correct location.",
-            redirect_to="https://course-home-elsewhere.com",
         )
 
 
@@ -649,37 +691,6 @@ class StaffViewCourseAbout(PipelineStep):
         return {
             "context": context, template_name: template_name,
         }
-
-
-class RedirectCustomCourseAbout(PipelineStep):
-    """
-    Redirect to custom course about.
-
-    Example usage:
-
-    Add the following configurations to your configuration file:
-
-            "OPEN_EDX_FILTERS_CONFIG": {
-            "org.openedx.learning.course_about.render.started.v1": {
-                "fail_silently": False,
-                "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.RedirectCustomCourseAbout"
-                ]
-            }
-        }
-    """
-
-    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
-        """
-        Pipeline step that redirects to the course survey.
-
-        When raising RedirectCourseAboutPage, this filter uses a redirect_to field handled by
-        the course about view that redirects to that URL.
-        """
-        raise CourseAboutRenderStarted.RedirectCourseAboutPage(
-            "You can't access this courses about page, redirecting to the correct location.",
-            redirect_to="https://custom-course-about.com",
-        )
 
 
 class RedirectToCustomCertificate(PipelineStep):
