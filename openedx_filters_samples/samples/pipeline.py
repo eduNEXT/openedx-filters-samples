@@ -304,9 +304,9 @@ class StopUnenrollment(PipelineStep):
         )
 
 
-class StopCertificateCreation(PipelineStep):
+class RenderAlternativeCertificate(PipelineStep):
     """
-    Stop certificate generation process raising PreventCertificateCreation exception.
+    Stop certificate generation process raising RenderAlternativeCertificate exception.
 
     Example usage:
 
@@ -316,14 +316,68 @@ class StopCertificateCreation(PipelineStep):
             "org.openedx.learning.certificate.creation.requested.v1": {
                 "fail_silently": False,
                 "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.StopCertificateCreation"
+                    "openedx_filters_samples.samples.pipeline.RenderAlternativeCertificate"
                 ]
             }
         }
     """
-    def run_filter(self, user, course_key, mode, status, grade, generation_mode, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise CertificateCreationRequested.PreventCertificateCreation(
-            "You can't generate a certificate from this site."
+
+    def run_filter(self, context, custom_template, *args, **kwargs):  # pylint: disable=arguments-differ
+        raise CertificateRenderStarted.RenderAlternativeCertificate(
+            "You can't generate a certificate from this site.",
+            custom_template="custom-cert-template.html"
+        )
+
+
+class RenderCustomResponseCertificate(PipelineStep):
+    """
+    Stop certificate generation process raising RenderCustomResponseCertificate exception.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.certificate.creation.requested.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RenderCustomResponseCertificate"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, custom_template, *args, **kwargs):  # pylint: disable=arguments-differ
+        response = HttpResponse("Here's the text of the web page.")
+        raise CertificateRenderStarted.RenderCustomResponse(
+            "You can't generate a certificate from this site.",
+            response=response,
+        )
+
+
+class RedirectToCustomCertificate(PipelineStep):
+    """
+    Redirect to custom certificate.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.certificate.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RenderCustomCertificateStep"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, custom_template):  # pylint: disable=arguments-differ
+        """Pipeline step that redirects before rendering the certificate."""
+        raise CertificateRenderStarted.RedirectToPage(
+            "You can't generate a certificate from this site, redirecting to the correct location.",
+            redirect_to="https://certificate.pdf",
         )
 
 
@@ -345,12 +399,12 @@ class RenderResponseCourseAbout(PipelineStep):
         }
     """
 
-    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+    def run_filter(self, context, custom_template, *args, **kwargs):  # pylint: disable=arguments-differ
         """
         Pipeline step that redirects to the course survey.
 
-        When raising RedirectCourseHomePage, this filter uses a redirect_to field handled by
-        the course home view that redirects to the URL indicated.
+        When raising the exception, this filter uses a redirect_to field handled by
+        the course about view that redirects to the URL indicated.
         """
         response = HttpResponse("Here's the text of the web page.")
 
@@ -382,15 +436,14 @@ class RenderAlternativeCourseAbout(PipelineStep):
         """
         Pipeline step that renders a custom template.
 
-        When raising RedirectCourseHomePage, this filter uses a redirect_to field handled by
-        the course home view that redirects to the URL indicated.
+        When raising the exception, this filter uses a redirect_to field handled by
+        the course about view that redirects to the URL indicated.
         """
         raise CourseAboutRenderStarted.RenderAlternativeCourseAbout(
             "You can't view this course.",
             course_about_template='custom-course-about-template.html',
             template_context=context,
         )
-
 
 
 class RedirectCustomCourseAbout(PipelineStep):
@@ -415,7 +468,7 @@ class RedirectCustomCourseAbout(PipelineStep):
         """
         Pipeline step that redirects to the course survey.
 
-        When raising RedirectCourseAboutPage, this filter uses a redirect_to field handled by
+        When raising RedirectToPage, this filter uses a redirect_to field handled by
         the course about view that redirects to that URL.
         """
         raise CourseAboutRenderStarted.RedirectToPage(
@@ -424,9 +477,9 @@ class RedirectCustomCourseAbout(PipelineStep):
         )
 
 
-class StopCourseHomeRendering(PipelineStep):
+class RenderResponseCourseHome(PipelineStep):
     """
-    Stop course home render raising StopCourseHomeRendering exception.
+    Stop course about render raising RenderCustomResponse exception.
 
     Example usage:
 
@@ -436,16 +489,78 @@ class StopCourseHomeRendering(PipelineStep):
             "org.openedx.learning.course_home.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.StopCourseHomeRendering"
+                    "openedx_filters_samples.samples.pipeline.RenderResponseCourseHome"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """
+        Pipeline step that redirects to the course survey.
+
+        When raising the exception, this filter uses a redirect_to field handled by
+        the course home view that redirects to the URL indicated.
+        """
+        raise CourseHomeRenderStarted.RenderCustomResponse(
+            "You can't access this courses home page.",
+            response="<p>Here's the text of the web page.</p>",
+        )
+
+
+class RenderAlternativeCourseHome(PipelineStep):
+    """
+    Stop course home render raising RenderAlternativeCourseHome exception.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.course_home.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RenderAlternativeCourseHome"
                 ]
             }
         }
     """
     def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise CourseHomeRenderStarted.PreventCourseHomeRender(
+        raise CourseHomeRenderStarted.RenderAlternativeCourseHome(
             "You can't view this course.",
             course_home_template='course_experience/custom-course-home-fragment.html',
             template_context=context,
+        )
+
+
+class RedirectCustomCourseHome(PipelineStep):
+    """
+    Redirect to custom course about.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+            "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RedirectCustomCourseHome"
+                ]
+            }
+        }
+    """
+
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+        """
+        Pipeline step that redirects to the course survey.
+
+        When raising RedirectToPage, this filter uses a redirect_to field handled by
+        the course home view that redirects to that URL.
+        """
+        raise CourseHomeRenderStarted.RedirectToPage(
+            "You can't access this courses about page, redirecting to the correct location.",
+            redirect_to="https://custom-course-home.com",
         )
 
 
@@ -475,7 +590,6 @@ class ModifyUpdatesFromCourse(PipelineStep):
         return {
             "context": context, template_name: template_name,
         }
-
 
 
 class StopDashboardRender(PipelineStep):
@@ -554,30 +668,6 @@ class FilterEnrollmentDashboard(PipelineStep):
         return {
             "context": context, template_name: template_name,
         }
-
-
-class StopCertificateRender(PipelineStep):
-    """
-    Stop certificate render raising PreventCertificateRender exception.
-
-    Example usage:
-
-    Add the following configurations to your configuration file:
-
-        "OPEN_EDX_FILTERS_CONFIG": {
-            "org.openedx.learning.certificate.render.started.v1": {
-                "fail_silently": False,
-                "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.StopCertificateRender"
-                ]
-            }
-        }
-    """
-    def run_filter(self, context, custom_template, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise CertificateRenderStarted.PreventCertificateRender(
-            "You can't view this certificate.",
-            invalid_cert_path="custom.invalid.cert.template.path",
-        )
 
 
 class RenderCustomCertificateStep(PipelineStep):
@@ -691,29 +781,3 @@ class StaffViewCourseAbout(PipelineStep):
         return {
             "context": context, template_name: template_name,
         }
-
-
-class RedirectToCustomCertificate(PipelineStep):
-    """
-    Redirect to custom certificate.
-
-    Example usage:
-
-    Add the following configurations to your configuration file:
-
-        "OPEN_EDX_FILTERS_CONFIG": {
-            "org.openedx.learning.certificate.render.started.v1": {
-                "fail_silently": False,
-                "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.RenderCustomCertificateStep"
-                ]
-            }
-        }
-    """
-
-    def run_filter(self, context, custom_template):  # pylint: disable=arguments-differ
-        """Pipeline step that redirects before rendering the certificate."""
-        raise CertificateRenderStarted.RedirectCertificateRender(
-            "You can't generate a certificate from this site, redirecting to the correct location.",
-            redirect_to="https://certificate.pdf",
-        )
