@@ -592,9 +592,9 @@ class ModifyUpdatesFromCourse(PipelineStep):
         }
 
 
-class StopDashboardRender(PipelineStep):
+class RenderAlternativeDashboard(PipelineStep):
     """
-    Stop dashboard render raising PreventDashboardRender exception.
+    Stop dashboard render raising RenderAlternativeDashboard exception.
 
     Example usage:
 
@@ -604,13 +604,13 @@ class StopDashboardRender(PipelineStep):
             "org.openedx.learning.dashboard.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.StopDashboardRender"
+                    "openedx_filters_samples.samples.pipeline.RenderAlternativeDashboard"
                 ]
             }
         }
     """
     def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise DashboardRenderStarted.PreventDashboardRender(
+        raise DashboardRenderStarted.RenderAlternativeDashboard(
             "You can't access the dashboard right now.",
             dashboard_template="static_templates/server-error.html",
             template_context=context,
@@ -619,7 +619,7 @@ class StopDashboardRender(PipelineStep):
 
 class RedirectFromDashboard(PipelineStep):
     """
-    Stop dashboard render raising RedirectDashboardPage exception.
+    Stop dashboard render raising RedirectToPage exception.
 
     Example usage:
 
@@ -635,10 +635,36 @@ class RedirectFromDashboard(PipelineStep):
         }
     """
     def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise DashboardRenderStarted.RedirectDashboardPage(
+        raise DashboardRenderStarted.RedirectToPage(
             "You can't see this site's dashboard, redirecting to the correct location.",
             redirect_to="https://custom-lms-dashboard.com",
         )
+
+
+class RenderCustomDashboardResponse(PipelineStep):
+    """
+    Stop dashboard render raising RedirectToPage exception.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.dashboard.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.RenderCustomDashboardResponse"
+                ]
+            }
+        }
+    """
+    def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
+        response = HttpResponse("This is a custom response.")
+        raise DashboardRenderStarted.RenderCustomResponse(
+            "You can't see this site's dashboard.",
+            response=response,
+        )
+
 
 class FilterEnrollmentDashboard(PipelineStep):
     """
