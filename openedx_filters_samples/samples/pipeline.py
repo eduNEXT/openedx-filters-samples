@@ -12,7 +12,6 @@ from openedx_filters.learning.filters import (
     CohortChangeRequested,
     CourseAboutRenderStarted,
     CourseEnrollmentStarted,
-    CourseHomeRenderStarted,
     CourseUnenrollmentStarted,
     DashboardRenderStarted,
     StudentLoginRequested,
@@ -477,93 +476,6 @@ class RedirectCustomCourseAbout(PipelineStep):
         )
 
 
-class RenderResponseCourseHome(PipelineStep):
-    """
-    Stop course about render raising RenderCustomResponse exception.
-
-    Example usage:
-
-    Add the following configurations to your configuration file:
-
-        "OPEN_EDX_FILTERS_CONFIG": {
-            "org.openedx.learning.course_home.render.started.v1": {
-                "fail_silently": False,
-                "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.RenderResponseCourseHome"
-                ]
-            }
-        }
-    """
-
-    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
-        """
-        Pipeline step that redirects to the course survey.
-
-        When raising the exception, this filter uses a redirect_to field handled by
-        the course home view that redirects to the URL indicated.
-        """
-        raise CourseHomeRenderStarted.RenderCustomResponse(
-            "You can't access this courses home page.",
-            response="<p>Here's the text of the web page.</p>",
-        )
-
-
-class RenderAlternativeCourseHome(PipelineStep):
-    """
-    Stop course home render raising RenderAlternativeCourseHome exception.
-
-    Example usage:
-
-    Add the following configurations to your configuration file:
-
-        "OPEN_EDX_FILTERS_CONFIG": {
-            "org.openedx.learning.course_home.render.started.v1": {
-                "fail_silently": False,
-                "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.RenderAlternativeCourseHome"
-                ]
-            }
-        }
-    """
-    def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise CourseHomeRenderStarted.RenderAlternativeCourseHome(
-            "You can't view this course.",
-            course_home_template='course_experience/custom-course-home-fragment.html',
-            template_context=context,
-        )
-
-
-class RedirectCustomCourseHome(PipelineStep):
-    """
-    Redirect to custom course about.
-
-    Example usage:
-
-    Add the following configurations to your configuration file:
-
-            "OPEN_EDX_FILTERS_CONFIG": {
-            "org.openedx.learning.course_about.render.started.v1": {
-                "fail_silently": False,
-                "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.RedirectCustomCourseHome"
-                ]
-            }
-        }
-    """
-
-    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
-        """
-        Pipeline step that redirects to the course survey.
-
-        When raising RedirectToPage, this filter uses a redirect_to field handled by
-        the course home view that redirects to that URL.
-        """
-        raise CourseHomeRenderStarted.RedirectToPage(
-            "You can't access this courses about page, redirecting to the correct location.",
-            redirect_to="https://custom-course-home.com",
-        )
-
-
 class ModifyUpdatesFromCourse(PipelineStep):
     """
     Modifies any update from course when rendering the home page.
@@ -637,7 +549,6 @@ class RedirectFromDashboard(PipelineStep):
     def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
         raise DashboardRenderStarted.RedirectToPage(
             "You can't see this site's dashboard, redirecting to the correct location.",
-            redirect_to="https://custom-lms-dashboard.com",
         )
 
 
