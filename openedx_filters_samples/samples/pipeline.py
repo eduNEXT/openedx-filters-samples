@@ -16,6 +16,7 @@ from openedx_filters.learning.filters import (
     DashboardRenderStarted,
     StudentLoginRequested,
     StudentRegistrationRequested,
+    CohortAssignmentRequested,
 )
 
 
@@ -691,6 +692,27 @@ class StopCohortChange(PipelineStep):
     """
     def run_filter(self, current_membership, target_cohort, *args, **kwargs):  # pylint: disable=arguments-differ
         raise CohortChangeRequested.PreventCohortChange("You can't change cohorts.")
+
+
+class StopCohortAssignment(PipelineStep):
+    """
+    Stop cohort assignment process raising PreventCohortAssignment exception.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.cohort.assignment.requested.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.StopCohortAssignment"
+                ]
+            }
+        }
+    """
+    def run_filter(self, user, target_cohort, *args, **kwargs):  # pylint: disable=arguments-differ
+        raise CohortAssignmentRequested.PreventCohortAssignment("You can't assign this user to that cohorts.")
 
 
 class StaffViewCourseAbout(PipelineStep):
