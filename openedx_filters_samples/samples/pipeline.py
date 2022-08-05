@@ -20,6 +20,18 @@ from openedx_filters.learning.filters import (
 )
 
 
+class StopCertificateCreation(PipelineStep):
+    """
+    Utility function used when getting steps for pipeline.
+    """
+
+    def run_filter(self, user, course_key, mode, status, grade, generation_mode):  # pylint: disable=arguments-differ
+        """Pipeline step that stops the certificate generation process."""
+        raise CertificateCreationRequested.PreventCertificateCreation(
+            "You can't generate a certificate from this site."
+        )
+
+
 class ModifyUsernameBeforeRegistration(PipelineStep):
     """
     Modify user's username appending 'modified'.
@@ -323,9 +335,8 @@ class RenderAlternativeCertificate(PipelineStep):
     """
 
     def run_filter(self, context, custom_template, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise CertificateRenderStarted.RenderAlternativeCertificate(
+        raise CertificateRenderStarted.RenderAlternativeInvalidCertificate(
             "You can't generate a certificate from this site.",
-            custom_template="custom-cert-template.html"
         )
 
 
@@ -439,9 +450,9 @@ class RenderAlternativeCourseAbout(PipelineStep):
         When raising the exception, this filter uses a redirect_to field handled by
         the course about view that redirects to the URL indicated.
         """
-        raise CourseAboutRenderStarted.RenderAlternativeCourseAbout(
+        raise CourseAboutRenderStarted.RenderInvalidCourseAbout(
             "You can't view this course.",
-            course_about_template='custom-course-about-template.html',
+            course_about_template='static_templates/404.html',
             template_context=context,
         )
 
@@ -523,9 +534,9 @@ class RenderAlternativeDashboard(PipelineStep):
         }
     """
     def run_filter(self, context, template_name, *args, **kwargs):  # pylint: disable=arguments-differ
-        raise DashboardRenderStarted.RenderAlternativeDashboard(
+        raise DashboardRenderStarted.RenderInvalidDashboard(
             "You can't access the dashboard right now.",
-            dashboard_template="static_templates/server-error.html",
+            dashboard_template="static_templates/404.html",
             template_context=context,
         )
 
