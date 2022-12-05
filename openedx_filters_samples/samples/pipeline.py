@@ -751,3 +751,29 @@ class StaffViewCourseAbout(PipelineStep):
         return {
             "context": context, template_name: template_name,
         }
+
+class StopAccountSettingsRender(PipelineStep):
+    """
+    Stop account settings render process raising RedirectToPage exception.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.student.settings.render.started.v1": {
+                "fail_silently": false,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.StopAccountSettingsRender"
+                ]
+            }
+        },
+    """
+    def run_filter(self, context, *args, **kwargs):  # pylint: disable=arguments-differ
+        """
+        Pipeline step that stop access to account settings page.
+        """
+        raise CourseAboutRenderStarted.RedirectToPage(
+            "You can't access to account settings.",
+            redirect_to="",
+        )
