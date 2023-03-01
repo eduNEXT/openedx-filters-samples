@@ -7,6 +7,7 @@ Filters steps exemplifying how to:
 from django.http import HttpResponse
 from openedx_filters import PipelineStep
 from openedx_filters.learning.filters import (
+    AccountSettingsRenderStarted,
     CertificateCreationRequested,
     CertificateRenderStarted,
     CohortChangeRequested,
@@ -773,7 +774,7 @@ class StopAccountSettingsRender(PipelineStep):
         """
         Pipeline step that stop access to account settings page.
         """
-        raise CourseAboutRenderStarted.RedirectToPage(
+        raise AccountSettingsRenderStarted.RedirectToPage(
             "You can't access to account settings.",
             redirect_to="",
         )
