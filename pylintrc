@@ -227,7 +227,6 @@ enable =
 	wrong-spelling-in-comment,
 	wrong-spelling-in-docstring,
 	
-	unused-argument,
 	unused-import,
 	unused-variable,
 	
@@ -383,7 +382,7 @@ disable =
 	unicode-builtin,
 	unpacking-in-except,
 	xrange-builtin,
-	
+	unused-argument,
 	logging-fstring-interpolation,
 	invalid-name,
 	django-not-configured,
