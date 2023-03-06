@@ -7,8 +7,10 @@ Filters steps exemplifying how to:
 from django.http import HttpResponse
 from openedx_filters import PipelineStep
 from openedx_filters.learning.filters import (
+    AccountSettingsRenderStarted,
     CertificateCreationRequested,
     CertificateRenderStarted,
+    CohortAssignmentRequested,
     CohortChangeRequested,
     CourseAboutRenderStarted,
     CourseEnrollmentStarted,
@@ -16,7 +18,6 @@ from openedx_filters.learning.filters import (
     DashboardRenderStarted,
     StudentLoginRequested,
     StudentRegistrationRequested,
-    CohortAssignmentRequested,
 )
 
 
@@ -120,7 +121,7 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
             }
         }
     """
-    def run_filter(self, user, course_id, mode, status, *args, **kwargs):  # pylint: disable=arguments-differ, unused-argument
+    def run_filter(self, user, course_id, mode, status, *args, **kwargs):  # pylint: disable=arguments-differ
         if mode == 'honor':
             return {
                 'mode': 'no-id-professional',
@@ -196,7 +197,7 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
         user = current_membership.user
         user.profile.set_meta(
             {
-                "cohort_info": f"Changed from Cohort {str(current_membership.course_user_group)} to Cohort {str(target_cohort)}"
+                "cohort_info": f"Changed from Cohort {str(current_membership.course_user_group)} to Cohort {str(target_cohort)}"  # pylint: disable=line-too-long
             }
         )
         user.profile.save()
@@ -243,7 +244,7 @@ class StopEnrollment(PipelineStep):
         }
     """
 
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, *args, **kwargs):
         raise CourseEnrollmentStarted.PreventEnrollment("You can't enroll on this course.")
 
 
@@ -265,7 +266,7 @@ class StopRegister(PipelineStep):
         }
     """
 
-    def run_filter(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, *args, **kwargs):
         raise StudentRegistrationRequested.PreventRegistration("You can't register on this site.", status_code=403)
 
 
@@ -642,7 +643,7 @@ class RenderCustomCertificateStep(PipelineStep):
         Pipeline steps that gets or creates a new custom template to render instead
         of the original.
         """
-        from opaque_keys.edx.keys import CourseKey
+        from opaque_keys.edx.keys import CourseKey  # pylint: disable=import-outside-toplevel
 
         course_key = CourseKey.from_string(context["course_id"])
         custom_template = self._get_or_create_custom_template(mode='honor', course_key=course_key)
@@ -652,7 +653,7 @@ class RenderCustomCertificateStep(PipelineStep):
         """
         Creates a custom certificate template entry in DB.
         """
-        from lms.djangoapps.certificates.models import CertificateTemplate
+        from lms.djangoapps.certificates.models import CertificateTemplate  # pylint: disable=E0401, C0415
 
         template_html = """
             <%namespace name='static' file='static_content.html'/>
@@ -751,3 +752,30 @@ class StaffViewCourseAbout(PipelineStep):
         return {
             "context": context, template_name: template_name,
         }
+
+
+class StopAccountSettingsRender(PipelineStep):
+    """
+    Stop account settings render process raising RedirectToPage exception.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+        "OPEN_EDX_FILTERS_CONFIG": {
+            "org.openedx.learning.student.settings.render.started.v1": {
+                "fail_silently": false,
+                "pipeline": [
+                    "openedx_filters_samples.samples.pipeline.StopAccountSettingsRender"
+                ]
+            }
+        },
+    """
+    def run_filter(self, context, *args, **kwargs):  # pylint: disable=arguments-differ
+        """
+        Pipeline step that stop access to account settings page.
+        """
+        raise AccountSettingsRenderStarted.RedirectToPage(
+            "You can't access to account settings.",
+            redirect_to="",
+        )
