@@ -779,3 +779,29 @@ class StopAccountSettingsRender(PipelineStep):
             "You can't access to account settings.",
             redirect_to="",
         )
+
+
+class CourseEnrollmentsQsPipelineStep(PipelineStep):
+    """
+    Filters enrollments by org.
+
+    Example usage:
+
+    Add the following configurations to your configuration file:
+
+    OPEN_EDX_FILTERS_CONFIG = {
+        "org.openedx.learning.course_enrollment_queryset.requested.v1": {
+            "fail_silently": False,
+            "pipeline": [
+                "openedx_filters_samples.samples.pipeline.CourseEnrollmentsQsPipelineStep"
+            ]
+        }
+    }
+    """
+
+    def run_filter(self, enrollments):  # pylint: disable=arguments-differ
+        """Pipeline steps that modifies course enrollments when make a queryset request."""
+        enrollments = [ enrollment for enrollment in enrollments if enrollment.course_id.org != "edX" ]
+        return {
+            "enrollments": enrollments,
+        }
