@@ -13,6 +13,7 @@ These use cases are illustrative and can be adapted to your specific needs.
 """
 
 from django.http import HttpResponse
+from opaque_keys.edx.keys import CourseKey
 from openedx_filters import PipelineStep
 from openedx_filters.learning.filters import (
     AccountSettingsRenderStarted,
@@ -23,11 +24,10 @@ from openedx_filters.learning.filters import (
     CourseAboutRenderStarted,
     CourseEnrollmentStarted,
     CourseUnenrollmentStarted,
-    DashboardRenderStarted,
     StudentLoginRequested,
     StudentRegistrationRequested,
 )
-from opaque_keys.edx.keys import CourseKey
+
 
 class ModifyUsernameBeforeRegistration(PipelineStep):
     """
@@ -49,9 +49,9 @@ class ModifyUsernameBeforeRegistration(PipelineStep):
 
     def run_filter(
         self, form_data, *args, **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Modifies the username before registration.
+        Modify the username before registration.
 
         Arguments:
             form_data (QueryDict): The form data containing the user's registration information.
@@ -82,9 +82,9 @@ class ModifyUserProfileBeforeLogin(PipelineStep):
     }
     """
 
-    def run_filter(self, user, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, user, *args, **kwargs):
         """
-        Modifies the user's profile before login.
+        Modify the user's profile before login.
 
         Arguments:
             user (User): The user logging in.
@@ -112,9 +112,9 @@ class ModifyModeBeforeEnrollment(PipelineStep):
 
     def run_filter(
         self, user, course_key, mode, *args, **kwargs
-    ):  # pylint: disable=arguments-differ, unused-argument
+    ):
         """
-        Changes the enrollment mode to 'honor' before enrollment.
+        Change the enrollment mode to 'honor' before enrollment.
 
         Arguments:
             user (User): The user enrolling in the course.
@@ -144,9 +144,9 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
 
     def run_filter(
         self, user, course_id, mode, status, *args, **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Changes the certificate mode from 'honor' to 'no-id-professional' before certificate creation.
+        Change the certificate mode from 'honor' to 'no-id-professional' before certificate creation.
 
         Arguments:
             user (User): The user requesting the certificate.
@@ -180,7 +180,13 @@ class ModifyContextBeforeRender(PipelineStep):
         }
     """
 
-    def run_filter(self, context, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, context, *args, **kwargs):
+        """
+        Modify the context before rendering the certificate.
+
+        Arguments:
+            context (dict): The context data for the certificate
+        """
         context["context_modified"] = True
         return {
             "context": context,
@@ -208,9 +214,9 @@ class ModifyUserProfileBeforeUnenrollment(PipelineStep):
 
     def run_filter(
         self, enrollment, *args, **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Modifies the user's profile before un-enrollment.
+        Modify the user's profile before un-enrollment.
 
         Arguments:
             enrollment (CourseEnrollment): The enrollment being un-enrolled.
@@ -241,9 +247,9 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
 
     def run_filter(
         self, current_membership, target_cohort, *args, **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Modifies the user's profile before cohort change or assignment.
+        Modify the user's profile before cohort change or assignment.
 
         Arguments:
             current_membership (CourseUserGroupMembership): The current membership of the user.
@@ -261,7 +267,7 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
 
 class ModifyUpdatesFromCourse(PipelineStep):
     """
-    Modifies any update from the course by changing the content to a simple message.
+    Modify any update from the course by changing the content to a simple message.
 
     Example usage:
 
@@ -275,9 +281,9 @@ class ModifyUpdatesFromCourse(PipelineStep):
         }
     """
 
-    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+    def run_filter(self, context, template_name):
         """
-        Modifies the course updates content to a simple message.
+        Modify the course updates content to a simple message.
 
         Arguments:
             context (dict): The context data for the course about page.
@@ -294,7 +300,9 @@ class ModifyUpdatesFromCourse(PipelineStep):
 
 class RenderCustomCertificateStep(PipelineStep):
     """
-    Step that modifies the certificate rendering process by creating a custom template.
+    Modify the certificate rendering process by creating a custom template.
+
+    By creating a custom certificate template, now the certificate will be rendered using the custom template.
 
     Example usage:
 
@@ -308,7 +316,7 @@ class RenderCustomCertificateStep(PipelineStep):
         }
     """
 
-    def run_filter(self, context, custom_template):  # pylint: disable=arguments-differ
+    def run_filter(self, context, custom_template):
         """
         Get or create a new custom template to render instead of the original.
 
@@ -326,11 +334,24 @@ class RenderCustomCertificateStep(PipelineStep):
         self, org_id=None, mode=None, course_key=None, language=None
     ):
         """
-        Creates a custom certificate template entry in DB.
+        Create a custom certificate template entry in the database.
+
+        Arguments:
+            org_id (str): The organization id for the certificate.
+            mode (str): The mode of the certificate.
+            course_key (CourseKey): The course key for the course.
+            language (str): The language of the certificate.
+
+        Returns:
+            CertificateTemplate: The custom certificate template.
+
+        WARNING: This method is for demonstration purposes only. It is not recommended to import
+        models directly from the platform code. This is done here to demonstrate how to create
+        a custom certificate template entry in the database.
         """
-        from lms.djangoapps.certificates.models import (
+        from lms.djangoapps.certificates.models import (  # pylint: disable=import-error, import-outside-toplevel
             CertificateTemplate,
-        )  # pylint: disable=E0401, C0415
+        )
 
         template_html = """
             <%namespace name='static' file='static_content.html'/>
@@ -379,12 +400,15 @@ class NoopFilter(PipelineStep):
     """
 
     def run_filter(self, *args, **kwargs):
+        """Return an empty dictionary without any modifications to the input data."""
         return {}
 
 
 class StopCertificateCreation(PipelineStep):
     """
     Stop certificate generation process raising PreventCertificateCreation exception.
+
+    By raising PreventCertificateCreation exception, the certificate generation process will be stopped in all cases.
 
     Example usage:
 
@@ -400,9 +424,9 @@ class StopCertificateCreation(PipelineStep):
 
     def run_filter(
         self, user, course_key, mode, status, grade, generation_mode
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Raises PreventCertificateCreation exception to stop the certificate generation in all cases.
+        Raise PreventCertificateCreation exception to stop the certificate generation in all cases.
 
         Arguments:
             user (User): The user requesting the certificate.
@@ -437,7 +461,7 @@ class StopEnrollment(PipelineStep):
 
     def run_filter(self, enrollment, *args, **kwargs):
         """
-        Raises PreventEnrollment exception to stop the enrollment process in all cases.
+        Raise PreventEnrollment exception to stop the enrollment process in all cases.
 
         Arguments:
             enrollment (CourseEnrollment): The enrollment being processed.
@@ -465,7 +489,13 @@ class StopRegister(PipelineStep):
         }
     """
 
-    def run_filter(self, *args, **kwargs):
+    def run_filter(self, form_data, *args, **kwargs):
+        """
+        Raise PreventRegister exception to stop the registration process in all cases.
+
+        Arguments:
+            form_data (QueryDict): The form data containing the user's registration information.
+        """
         raise StudentRegistrationRequested.PreventRegistration(
             "You can't register on this site.", status_code=403
         )
@@ -490,7 +520,13 @@ class StopLogin(PipelineStep):
         }
     """
 
-    def run_filter(self, user, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, user, *args, **kwargs):
+        """
+        Raise PreventLogin exception to stop the login process in all cases.
+
+        Arguments:
+            user (User): The user trying to login.
+        """
         raise StudentLoginRequested.PreventLogin(
             "You can't login on this site.",
             redirect_to="",
@@ -518,9 +554,9 @@ class StopUnenrollment(PipelineStep):
 
     def run_filter(
         self, enrollment, *args, **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Raises PreventUnenrollment exception to stop the un-enrollment process in all cases.
+        Raise PreventUnenrollment exception to stop the un-enrollment process in all cases.
 
         Arguments:
             enrollment (CourseEnrollment): The enrollment being un-enrolled.
@@ -552,9 +588,9 @@ class RenderAlternativeCertificate(PipelineStep):
 
     def run_filter(
         self, context, custom_template, *args, **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Raises RenderAlternativeInvalidCertificate exception to alter the certificate generation process.
+        Raise RenderAlternativeInvalidCertificate exception to alter the certificate generation process.
 
         Arguments:
             context (dict): The context data for the certificate.
@@ -586,9 +622,9 @@ class RenderCustomResponseCertificate(PipelineStep):
 
     def run_filter(
         self, context, custom_template, *args, **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Raises RenderCustomResponse exception to alter the certificate generation process.
+        Raise RenderCustomResponse exception to alter the certificate generation process.
 
         Arguments:
             context (dict): The context data for the certificate.
@@ -620,9 +656,9 @@ class RedirectToCustomCertificate(PipelineStep):
         }
     """
 
-    def run_filter(self, context, custom_template):  # pylint: disable=arguments-differ
+    def run_filter(self, context, custom_template):
         """
-        Raises RedirectToPage exception to redirect the user to a custom certificate page.
+        Raise RedirectToPage exception to redirect the user to a custom certificate page.
 
         Arguments:
             context (dict): The context data for the certificate.
@@ -655,9 +691,9 @@ class RenderResponseCourseAbout(PipelineStep):
 
     def run_filter(
         self, context, custom_template, *args, **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Raises RenderCustomResponse exception to alter the course about render process.
+        Raise RenderCustomResponse exception to alter the course about render process.
 
         When raising the exception, this filter uses a redirect_to field handled by
         the course about view that redirects to the URL indicated.
@@ -678,8 +714,9 @@ class RenderAlternativeCourseAbout(PipelineStep):
     """
     Alter course about render by raising RenderAlternativeCourseAbout exception.
 
-    By raising RenderAlternativeCourseAbout exception, the course about render process will be stopped and an alternative
-    course about page will be rendered. In this case, the default 404 course about template will be rendered.
+    By raising RenderAlternativeCourseAbout exception, the course about render process will be stopped and an
+    alternative course about page will be rendered. In this case, the default 404 course about template will be
+    rendered.
 
     Example usage:
 
@@ -693,7 +730,7 @@ class RenderAlternativeCourseAbout(PipelineStep):
         }
     """
 
-    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+    def run_filter(self, context, template_name):
         """
         Render alternative course about page raising RenderAlternativeCourseAbout exception.
 
@@ -730,12 +767,9 @@ class RedirectCustomCourseAbout(PipelineStep):
         }
     """
 
-    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
+    def run_filter(self, context, template_name):
         """
-        Pipeline step that redirects to the course survey.
-
-        When raising RedirectToPage, this filter uses a redirect_to field handled by
-        the course about view that redirects to that URL.
+        Redirect to custom course about page raising RedirectToPage exception.
 
         Arguments:
             context (dict): The context data for the course about page.
@@ -767,9 +801,9 @@ class StopCohortChange(PipelineStep):
 
     def run_filter(
         self, current_membership, target_cohort, *args, **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Raises PreventCohortChange exception to stop the cohort change process in all cases.
+        Raise PreventCohortChange exception to stop the cohort change process in all cases.
 
         Arguments:
             current_membership (CourseUserGroupMembership): The current membership of the user.
@@ -798,9 +832,9 @@ class StopCohortAssignment(PipelineStep):
 
     def run_filter(
         self, user, target_cohort, *args, **kwargs
-    ):  # pylint: disable=arguments-differ
+    ):
         """
-        Raises PreventCohortAssignment exception to stop the cohort assignment process in all cases.
+        Raise PreventCohortAssignment exception to stop the cohort assignment process in all cases.
 
         Arguments:
             user (User): The user being assigned to a cohort.
@@ -830,9 +864,12 @@ class StopAccountSettingsRender(PipelineStep):
         },
     """
 
-    def run_filter(self, context, *args, **kwargs):  # pylint: disable=arguments-differ
+    def run_filter(self, context, *args, **kwargs):
         """
-        Pipeline step that stop access to account settings page.
+        Raise RedirectToPage exception to stop the account settings render process.
+
+        Arguments:
+            context (dict): The context data for the account settings.
         """
         raise AccountSettingsRenderStarted.RedirectToPage(
             "You can't access to account settings.",
