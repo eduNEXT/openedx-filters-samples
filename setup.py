@@ -50,8 +50,7 @@ def load_requirements(*requirements_paths):
             # fine to add constraints to an unconstrained package,
             # raise an error if there are already constraints in place
             if (
-                existing_version_constraints
-                and existing_version_constraints != version_constraints
+                existing_version_constraints and existing_version_constraints != version_constraints
             ):
                 raise BaseException(
                     f"Multiple constraint definitions found for {package}:"
@@ -71,9 +70,7 @@ def load_requirements(*requirements_paths):
                     add_version_constraint_or_raise(line, requirements, True)
                 if line and line.startswith("-c") and not line.startswith("-c http"):
                     constraint_files.add(
-                        os.path.dirname(path)
-                        + "/"
-                        + line.split("#")[0].replace("-c", "").strip()
+                        os.path.dirname(path) + "/" + line.split("#")[0].replace("-c", "").strip()
                     )
 
     # process constraint files: add constraints to existing requirements
