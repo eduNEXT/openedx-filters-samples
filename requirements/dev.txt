@@ -21,7 +21,7 @@ build==1.2.2.post1
     # via
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/pip-tools.txt
     #   pip-tools
-cachetools==5.5.0
+cachetools==5.5.1
     # via
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/ci.txt
     #   tox
@@ -106,11 +106,15 @@ edx-lint==5.4.1
     # via -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/quality.txt
 edx-opaque-keys[django]==2.11.0
     # via -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/quality.txt
-filelock==3.16.1
+filelock==3.17.0
     # via
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/ci.txt
     #   tox
     #   virtualenv
+id==1.5.0
+    # via
+    #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/quality.txt
+    #   twine
 idna==3.10
     # via
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/ci.txt
@@ -205,10 +209,6 @@ pbr==6.1.0
     #   stevedore
 pip-tools==7.4.1
     # via -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/pip-tools.txt
-pkginfo==1.12.0
-    # via
-    #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/quality.txt
-    #   twine
 platformdirs==4.3.6
     # via
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/ci.txt
@@ -263,7 +263,7 @@ pymongo==4.10.1
     # via
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/quality.txt
     #   edx-opaque-keys
-pyproject-api==1.8.0
+pyproject-api==1.9.0
     # via
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/ci.txt
     #   tox
@@ -299,6 +299,7 @@ requests==2.32.3
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/ci.txt
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/quality.txt
     #   codecov
+    #   id
     #   requests-toolbelt
     #   twine
 requests-toolbelt==1.0.0
@@ -342,13 +343,13 @@ tomlkit==0.13.2
     # via
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/quality.txt
     #   pylint
-tox==4.23.2
+tox==4.24.1
     # via
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/ci.txt
     #   tox-battery
 tox-battery==0.6.1
     # via -r requirements/dev.in
-twine==6.0.1
+twine==6.1.0
     # via -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/quality.txt
 typing-extensions==4.12.2
     # via

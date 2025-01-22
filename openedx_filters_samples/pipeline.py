@@ -11,12 +11,11 @@ certificate mode before rendering.
 
 These use cases are illustrative and can be adapted to your specific needs.
 """
-
+import logging
 from django.http import HttpResponse
 from opaque_keys.edx.keys import CourseKey
 from openedx_filters import PipelineStep
 from openedx_filters.learning.filters import (
-    AccountSettingsRenderStarted,
     CertificateCreationRequested,
     CertificateRenderStarted,
     CohortAssignmentRequested,
@@ -28,6 +27,7 @@ from openedx_filters.learning.filters import (
     StudentRegistrationRequested,
 )
 
+log = logging.getLogger(__name__)
 
 class ModifyUsernameBeforeRegistration(PipelineStep):
     """
@@ -37,9 +37,9 @@ class ModifyUsernameBeforeRegistration(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
         "org.openedx.learning.student.registration.requested.v1": {
-            "fail_silently": false,
+            "fail_silently": False,
             "pipeline": [
                 "openedx_filters_samples.pipeline.ModifyUsernameBeforeRegistration"
             ]
@@ -56,6 +56,7 @@ class ModifyUsernameBeforeRegistration(PipelineStep):
         Arguments:
             form_data (QueryDict): The form data containing the user's registration information.
         """
+        log.info("Modifying username from %s to %s", form_data.get("username"), f"{form_data.get('username')}-modified")
         username = f"{form_data.get('username')}-modified"
         form_data["username"] = username
         return {
@@ -72,9 +73,9 @@ class ModifyUserProfileBeforeLogin(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
         "org.openedx.learning.student.login.requested.v1": {
-            "fail_silently": false,
+            "fail_silently": False,
             "pipeline": [
                 "openedx_filters_samples.pipeline.ModifyUserProfileBeforeLogin"
             ]
@@ -89,7 +90,8 @@ class ModifyUserProfileBeforeLogin(PipelineStep):
         Arguments:
             user (User): The user logging in.
         """
-        user.profile.set_meta({"previous_login": str(user.last_login)})
+        log.info("Modifying user profile by adding last login date")
+        user.profile.set_meta({"last_login": str(user.last_login)})
         user.profile.save()
         return {"user": user}
 
@@ -100,9 +102,9 @@ class ModifyModeBeforeEnrollment(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
         "org.openedx.learning.course.enrollment.started.v1": {
-            "fail_silently": false,
+            "fail_silently": False,
             "pipeline": [
                 "openedx_filters_samples.pipeline.ModifyModeBeforeEnrollment"
             ]
@@ -121,6 +123,7 @@ class ModifyModeBeforeEnrollment(PipelineStep):
             course_key (CourseKey): The course key for the course.
             mode (str): The mode of the enrollment.
         """
+        log.info("Modifying mode before enrollment for user %s to honor", user.username)
         return {
             "mode": "honor",
         }
@@ -132,7 +135,7 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.certificate.creation.requested.v1": {
                 "fail_silently": False,
                 "pipeline": [
@@ -143,7 +146,7 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
     """
 
     def run_filter(
-        self, user, course_id, mode, status, *args, **kwargs
+        self, user, course_key, mode, status, *args, **kwargs
     ):
         """
         Change the certificate mode from 'honor' to 'no-id-professional' before certificate creation.
@@ -154,6 +157,7 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
             mode (str): The mode of the certificate.
             status (str): The status of the certificate.
         """
+        log.info("Modifying certificate mode before creation for user %s to no-id-professional", user.username)
         if mode == "honor":
             return {
                 "mode": "no-id-professional",
@@ -170,7 +174,7 @@ class ModifyContextBeforeRender(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.certificate.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
@@ -187,6 +191,7 @@ class ModifyContextBeforeRender(PipelineStep):
         Arguments:
             context (dict): The context data for the certificate
         """
+        log.info("Modifying context before rendering by adding context_modified field")
         context["context_modified"] = True
         return {
             "context": context,
@@ -202,9 +207,9 @@ class ModifyUserProfileBeforeUnenrollment(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.course.unenrollment.started.v1": {
-                "fail_silently": false,
+                "fail_silently": False,
                 "pipeline": [
                     "openedx_filters_samples.pipeline.ModifyUserProfileBeforeUnenrollment"
                 ]
@@ -221,6 +226,7 @@ class ModifyUserProfileBeforeUnenrollment(PipelineStep):
         Arguments:
             enrollment (CourseEnrollment): The enrollment being un-enrolled.
         """
+        log.info("Modifying user profile before un-enrollment by adding unenrolled_from field")
         enrollment.user.profile.set_meta({"unenrolled_from": str(enrollment.course_id)})
         enrollment.user.profile.save()
         return {}
@@ -235,9 +241,9 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.cohort.change.requested.v1": {
-                "fail_silently": false,
+                "fail_silently": False,
                 "pipeline": [
                     "openedx_filters_samples.pipeline.ModifyUserProfileBeforeCohortChange"
                 ]
@@ -255,6 +261,7 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
             current_membership (CourseUserGroupMembership): The current membership of the user.
             target_cohort (CourseUserGroup): The target cohort to which the user is changing cohorts or being assigned.
         """
+        log.info("Modifying user profile before cohort change by adding cohort_info field")
         user = current_membership.user
         user.profile.set_meta(
             {
@@ -271,7 +278,7 @@ class ModifyUpdatesFromCourse(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.course_about.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
@@ -289,6 +296,7 @@ class ModifyUpdatesFromCourse(PipelineStep):
             context (dict): The context data for the course about page.
             template_name (str): The template name for the course about page.
         """
+        log.info("Modifying course about by changing updates content to a simple message")
         update_message = context["update_message_fragment"]
         if update_message:
             update_message.content = "<p>This is a simple message</p>"
@@ -306,7 +314,7 @@ class RenderCustomCertificateStep(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.certificate.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
@@ -324,6 +332,7 @@ class RenderCustomCertificateStep(PipelineStep):
             context (dict): The context data for the certificate.
             custom_template (str): The custom template to render.
         """
+        log.info("Rendering custom certificate template for course %s", context["course_id"])
         course_key = CourseKey.from_string(context["course_id"])
         custom_template = self._get_or_create_custom_template(
             mode="honor", course_key=course_key
@@ -389,9 +398,9 @@ class NoopFilter(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
         "org.openedx.learning.course.enrollment.started.v1": {
-            "fail_silently": false,
+            "fail_silently": False,
             "pipeline": [
                 "openedx_filters_samples.pipeline.NoopFilter"
             ]
@@ -401,6 +410,7 @@ class NoopFilter(PipelineStep):
 
     def run_filter(self, *args, **kwargs):
         """Return an empty dictionary without any modifications to the input data."""
+        log.info("Noop filter")
         return {}
 
 
@@ -412,9 +422,9 @@ class StopCertificateCreation(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
         "org.openedx.learning.certificate.creation.requested.v1": {
-            "fail_silently": false,
+            "fail_silently": False,
             "pipeline": [
                 "openedx_filters_samples.pipeline.StopCertificateCreation"
             ]
@@ -436,6 +446,7 @@ class StopCertificateCreation(PipelineStep):
             grade (str): The grade of the certificate.
             generation_mode (str): The generation mode of the certificate.
         """
+        log.info("Stopping certificate creation for user %s", user.username)
         raise CertificateCreationRequested.PreventCertificateCreation(
             "You can't generate a certificate from this site."
         )
@@ -449,9 +460,9 @@ class StopEnrollment(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.course.enrollment.started.v1": {
-                "fail_silently": false,
+                "fail_silently": False,
                 "pipeline": [
                     "openedx_filters_samples.pipeline.StopEnrollment"
                 ]
@@ -459,13 +470,14 @@ class StopEnrollment(PipelineStep):
         }
     """
 
-    def run_filter(self, enrollment, *args, **kwargs):
+    def run_filter(self, user, course_key, mode, *args, **kwargs):
         """
         Raise PreventEnrollment exception to stop the enrollment process in all cases.
 
         Arguments:
             enrollment (CourseEnrollment): The enrollment being processed.
         """
+        log.info("Stopping enrollment for user %s", user.username)
         raise CourseEnrollmentStarted.PreventEnrollment(
             "You can't enroll on this course."
         )
@@ -479,9 +491,9 @@ class StopRegister(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.student.registration.requested.v1": {
-                "fail_silently": false,
+                "fail_silently": False,
                 "pipeline": [
                     "openedx_filters_samples.pipeline.StopRegister"
                 ]
@@ -496,6 +508,7 @@ class StopRegister(PipelineStep):
         Arguments:
             form_data (QueryDict): The form data containing the user's registration information.
         """
+        log.info("Stopping registration for user %s", form_data.get("username"))
         raise StudentRegistrationRequested.PreventRegistration(
             "You can't register on this site.", status_code=403
         )
@@ -510,9 +523,9 @@ class StopLogin(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.student.login.requested.v1": {
-                "fail_silently": false,
+                "fail_silently": False,
                 "pipeline": [
                     "openedx_filters_samples.pipeline.StopLogin"
                 ]
@@ -527,6 +540,7 @@ class StopLogin(PipelineStep):
         Arguments:
             user (User): The user trying to login.
         """
+        log.info("Stopping login for user %s", user.username)
         raise StudentLoginRequested.PreventLogin(
             "You can't login on this site.",
             redirect_to="",
@@ -542,9 +556,9 @@ class StopUnenrollment(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.course.unenrollment.started.v1": {
-                "fail_silently": false,
+                "fail_silently": False,
                 "pipeline": [
                     "openedx_filters_samples.pipeline.StopUnenrollment"
                 ]
@@ -561,6 +575,7 @@ class StopUnenrollment(PipelineStep):
         Arguments:
             enrollment (CourseEnrollment): The enrollment being un-enrolled.
         """
+        log.info("Stopping un-enrollment for user %s", enrollment.user.username)
         raise CourseUnenrollmentStarted.PreventUnenrollment(
             "You can't un-enroll from this site."
         )
@@ -576,8 +591,8 @@ class RenderAlternativeCertificate(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
-            "org.openedx.learning.certificate.creation.requested.v1": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.certificate.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
                     "openedx_filters_samples.pipeline.RenderAlternativeCertificate"
@@ -596,6 +611,7 @@ class RenderAlternativeCertificate(PipelineStep):
             context (dict): The context data for the certificate.
             custom_template (str): The custom template to render.
         """
+        log.info("Rendering alternative certificate for course %s", context["course_id"])
         raise CertificateRenderStarted.RenderAlternativeInvalidCertificate(
             "You can't generate a certificate from this site.",
         )
@@ -610,8 +626,8 @@ class RenderCustomResponseCertificate(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
-            "org.openedx.learning.certificate.creation.requested.v1": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.certificate.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
                     "openedx_filters_samples.pipeline.RenderCustomResponseCertificate"
@@ -630,6 +646,7 @@ class RenderCustomResponseCertificate(PipelineStep):
             context (dict): The context data for the certificate.
             custom_template (str): The custom template to render.
         """
+        log.info("Rendering custom response for course %s", context["course_id"])
         response = HttpResponse("Here's the text of the web page.")
         raise CertificateRenderStarted.RenderCustomResponse(
             "You can't generate a certificate from this site.",
@@ -646,7 +663,7 @@ class RedirectToCustomCertificate(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.certificate.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
@@ -664,6 +681,7 @@ class RedirectToCustomCertificate(PipelineStep):
             context (dict): The context data for the certificate.
             custom_template (str): The custom template to render.
         """
+        log.info("Redirecting to custom certificate page for course %s", context["course_id"])
         raise CertificateRenderStarted.RedirectToPage(
             "You can't generate a certificate from this site, redirecting to the correct location.",
             redirect_to="https://certificate.pdf",
@@ -679,7 +697,7 @@ class RenderResponseCourseAbout(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.course_about.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
@@ -702,8 +720,8 @@ class RenderResponseCourseAbout(PipelineStep):
             context (dict): The context data for the course about page.
             custom_template (str): The custom template to render.
         """
+        log.info("Rendering custom response for course %s", context["course_id"])
         response = HttpResponse("Here's the text of the web page.")
-
         raise CourseAboutRenderStarted.RenderCustomResponse(
             "You can't access this courses home page, redirecting to the correct location.",
             response=response,
@@ -720,7 +738,7 @@ class RenderAlternativeCourseAbout(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.course_about.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
@@ -741,6 +759,7 @@ class RenderAlternativeCourseAbout(PipelineStep):
             context (dict): The context data for the course about page.
             template_name (str): The template name for the course about page.
         """
+        log.info("Rendering alternative course about page for course %s", context["course_id"])
         raise CourseAboutRenderStarted.RenderInvalidCourseAbout(
             "You can't view this course.",
             course_about_template="static_templates/404.html",
@@ -757,7 +776,7 @@ class RedirectCustomCourseAbout(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.course_about.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
@@ -775,6 +794,7 @@ class RedirectCustomCourseAbout(PipelineStep):
             context (dict): The context data for the course about page.
             template_name (str): The template name for the course about page.
         """
+        log.info("Redirecting to custom course about page for course %s", context["course_id"])
         raise CourseAboutRenderStarted.RedirectToPage(
             "You can't access this courses about page, redirecting to the correct location.",
             redirect_to="https://custom-course-about.com",
@@ -789,7 +809,7 @@ class StopCohortChange(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.cohort.change.requested.v1": {
                 "fail_silently": False,
                 "pipeline": [
@@ -809,6 +829,7 @@ class StopCohortChange(PipelineStep):
             current_membership (CourseUserGroupMembership): The current membership of the user.
             target_cohort (CourseUserGroup): The target cohort to which the user is changing cohorts.
         """
+        log.info("Stopping cohort change for user %s", current_membership.user.username)
         raise CohortChangeRequested.PreventCohortChange("You can't change cohorts.")
 
 
@@ -820,7 +841,7 @@ class StopCohortAssignment(PipelineStep):
 
     Example usage:
 
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
             "org.openedx.learning.cohort.assignment.requested.v1": {
                 "fail_silently": False,
                 "pipeline": [
@@ -840,38 +861,7 @@ class StopCohortAssignment(PipelineStep):
             user (User): The user being assigned to a cohort.
             target_cohort (CourseUserGroup): The target cohort to which the user is being assigned.
         """
+        log.info("Stopping cohort assignment for user %s", user.username)
         raise CohortAssignmentRequested.PreventCohortAssignment(
             "You can't assign this user to that cohorts."
-        )
-
-
-class StopAccountSettingsRender(PipelineStep):
-    """
-    Alter the account settings render process by raising RedirectToPage exception.
-
-    By raising RedirectToPage exception, the account settings render process will be stopped and the user will be
-    redirected to a custom page or any other URL.
-
-    Example usage:
-
-    >>> "OPEN_EDX_FILTERS_CONFIG": {
-            "org.openedx.learning.student.settings.render.started.v1": {
-                "fail_silently": false,
-                "pipeline": [
-                    "openedx_filters_samples.pipeline.StopAccountSettingsRender"
-                ]
-            }
-        },
-    """
-
-    def run_filter(self, context, *args, **kwargs):
-        """
-        Raise RedirectToPage exception to stop the account settings render process.
-
-        Arguments:
-            context (dict): The context data for the account settings.
-        """
-        raise AccountSettingsRenderStarted.RedirectToPage(
-            "You can't access to account settings.",
-            redirect_to="https://custom-account-settings.com",
         )

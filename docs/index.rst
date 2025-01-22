@@ -14,17 +14,4 @@ Contents:
    :maxdepth: 2
 
    readme
-   getting_started
-   testing
-   internationalization
-   modules
-   changelog
-   decisions
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   pipeline-steps

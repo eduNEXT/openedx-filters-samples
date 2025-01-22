@@ -1,5 +1,5 @@
 .PHONY: clean clean_tox compile_translations coverage diff_cover docs dummy_translations \
-        extract_translations fake_translations help pii_check pull_translations \
+        extract_translations fake_translations help pull_translations push_translations \
         quality requirements selfcheck test test-all upgrade validate install_transifex_client
 
 .DEFAULT_GOAL := help
@@ -56,9 +56,6 @@ upgrade: ## update the requirements/*.txt files with the latest packages satisfy
 quality: ## check coding style with pycodestyle and pylint
 	tox -e quality
 
-pii_check: ## check for PII annotations on all Django models
-	tox -e pii_check
-
 piptools: ## install pinned version of pip-compile and pip-sync
 	pip install -r requirements/pip.txt
 	pip install -r requirements/pip-tools.txt
@@ -72,11 +69,14 @@ test: clean ## run tests in the current virtualenv
 diff_cover: test ## find diff lines that need test coverage
 	diff-cover coverage.xml
 
-test-all: quality pii_check ## run tests on every supported Python/Django combination
+test-all: quality ## run tests on every supported Python/Django combination
 	tox
 	tox -e docs
 
-validate: quality pii_check test ## run tests and quality checks
+validate: quality test ## run tests and quality checks
+
+isort:  ## fix improperly sorted imports
+	isort test_utils openedx_filters_samples manage.py setup.py
 
 selfcheck: ## check that the Makefile is well-formed
 	@echo "The Makefile is well-formed."
@@ -85,13 +85,13 @@ selfcheck: ## check that the Makefile is well-formed
 
 extract_translations: ## extract strings to be translated, outputting .mo files
 	rm -rf docs/_build
-	cd openedx_filters_samples && i18n_tool extract --no-segment
+	cd {{cookiecutter.app_name}} && i18n_tool extract --no-segment
 
 compile_translations: ## compile translation files, outputting .po files for each supported language
-	cd openedx_filters_samples && i18n_tool generate
+	cd {{cookiecutter.app_name}} && i18n_tool generate
 
 detect_changed_source_translations:
-	cd openedx_filters_samples && i18n_tool changed
+	cd {{cookiecutter.app_name}} && i18n_tool changed
 
 ifeq ($(OPENEDX_ATLAS_PULL),)
 pull_translations: ## Pull translations from Transifex
@@ -99,22 +99,25 @@ pull_translations: ## Pull translations from Transifex
 else
 # Experimental: OEP-58 Pulls translations using atlas
 pull_translations:
-	find openedx_filters_samples/conf/locale -mindepth 1 -maxdepth 1 -type d -exec rm -r {} \;
-	atlas pull $(OPENEDX_ATLAS_ARGS) translations/openedx-filters-samples/openedx_filters_samples/conf/locale:openedx_filters_samples/conf/locale
+	find {{cookiecutter.app_name}}/conf/locale -mindepth 1 -maxdepth 1 -type d -exec rm -r {} \;
+	atlas pull $(OPENEDX_ATLAS_ARGS) translations/{{cookiecutter.repo_name}}/{{cookiecutter.app_name}}/conf/locale:{{cookiecutter.app_name}}/conf/locale
 	python manage.py compilemessages
 
 	@echo "Translations have been pulled via Atlas and compiled."
 endif
 
+push_translations: ## push source translation files (.po) from Transifex
+	tx push -s
+
 dummy_translations: ## generate dummy translation (.po) files
-	cd openedx_filters_samples && i18n_tool dummy
+	cd {{cookiecutter.app_name}} && i18n_tool dummy
 
 build_dummy_translations: extract_translations dummy_translations compile_translations ## generate and compile dummy translation files
 
 validate_translations: build_dummy_translations detect_changed_source_translations ## validate translations
 
 install_transifex_client: ## Install the Transifex client
-	# Installing client will skip CHANGELOG and LICENSE files from git changes
+	# Instaling client will skip CHANGELOG and LICENSE files from git changes
 	# so remind the user to commit the change first before installing client.
 	git diff -s --exit-code HEAD || { echo "Please commit changes first."; exit 1; }
 	curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash
