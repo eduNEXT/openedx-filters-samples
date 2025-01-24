@@ -10,11 +10,10 @@ A ready-to-use repository illustrating how to use Open edX Filters to modify the
 Purpose
 ********
 
-This repository demonstrates how to use Open edX Filters to modify the behavior of the Open edX platform. Filters are a powerful feature that allows developers to modify the behavior of the platform without changing the core codebase. This can be useful for a variety of use cases, such as:
+This repository demonstrates how to use Open edX Filters to modify the behavior of the Open edX platform. Filters are a powerful feature that allows developers to modify the behavior of the platform without directly changing the Open edX core. This can be useful for a variety of use cases, such as:
 
 - Customizing the user experience
 - Implementing custom business logic
-- Integrating with third-party services
 - Etc.
 
 Getting Started with Development
@@ -77,7 +76,7 @@ To use this plugin, follow these steps:
 
 .. code-block:: python
 
-     # Location plugins/filters.py
+     # Location plugins/openedx-filters.py
      from tutor import hooks
 
      hooks.Filters.ENV_PATCHES.add_item(
@@ -98,7 +97,7 @@ To use this plugin, follow these steps:
 
 .. code-block:: bash
 
-     tutor plugins enable filter
+     tutor plugins enable openedx-filters
 
 4. Trigger the filter by enrolling in a course. The filter will be applied and the pipeline step will be executed stopping the enrollment process.
 
@@ -110,12 +109,12 @@ This repository is a starting point for Open edX developers:
 - You can add new filter pipeline step by following the structure in `pipeline.py`_.
 - Custom logic can be implemented in the pipeline step to test the behavior of the filter in the Open edX platform.
 
-For details on extending Open edX with Open edX Events, see also:
+For details on extending Open edX with Open edX Filters, see also:
 
 - `Open edX Filters Documentation`_
 - `Hooks Extension Framework`_
 
-The openedx-filters-samples repository is here to make integrations simple and sustainable, giving developers the tools implement new filters and test them in a safe environment.
+The openedx-filters-samples repository is here to give developers the tools implement new filters and test them with pipeline steps in a safe environment.
 
 More Help
 =========
@@ -131,7 +130,7 @@ For anything non-trivial, the best path is to open an issue in this
 repository with as many details about the issue you are facing as you
 can provide.
 
-https://github.com/openedx/openedx-filters-samples/issues
+https://github.com/edunext/openedx-filters-samples/issues
 
 For more information about these options, see the `Getting Help <https://openedx.org/getting-help>`__ page.
 
@@ -177,7 +176,7 @@ Reporting Security Issues
 Please do not report security issues in public. Please email security@edunext.co.
 
 .. _Hooks Extension Framework: https://open-edx-proposals.readthedocs.io/en/latest/oep-0050-hooks-extension-framework.html
-.. _Open edX Filters Documentation: https://docs.openedx.org/projects/openedx-fukters/en/latest/
+.. _Open edX Filters Documentation: https://docs.openedx.org/projects/openedx-filters/en/latest/
 .. _Tutor plugin: https://docs.tutor.edly.io/plugins/intro.html#plugins
 .. _Tutor documentation: https://docs.tutor.edly.io/
 .. _pipeline.py: openedx_filters_samples/pipeline.py

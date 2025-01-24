@@ -118,7 +118,7 @@ CHANGELOG = open(
 setup(
     name="openedx-filters-samples",
     version=VERSION,
-    description="""Used to create Open edX Filters steps for testing purposes """,
+    description="""Used to create Open edX Filters pipeline steps for testing purposes.""",
     long_description=README + "\n\n" + CHANGELOG,
     long_description_content_type='text/x-rst',
     author="edX",
@@ -136,7 +136,7 @@ setup(
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Framework :: Django",
-        "Framework :: Django :: 2.2",
+        "Framework :: Django :: 4.2",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
         "Natural Language :: English",
