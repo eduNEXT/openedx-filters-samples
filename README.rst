@@ -36,6 +36,8 @@ Documentation
 
 Refer to the `Open edX Filters documentation`_ to learn about implementing and working with filters. This documentation details how to use the repository as a testing tool for Open edX filters, they are not meant to be used in production environments.
 
+You can review the rendered documentation at `https://edunext.github.io/openedx-filters-samples/`_.
+
 Features
 --------
 
@@ -47,7 +49,7 @@ Features
 Supported Filters
 -----------------
 
-These are the filters that are currently supported in this repository: pipeline-steps.
+These are the filters that are currently supported in this repository: `Pipeline Steps <https://edunext.github.io/openedx-filters-samples/pipeline-steps.html>`_
 
 How Does it Work?
 -----------------
