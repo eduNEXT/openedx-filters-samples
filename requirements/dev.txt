@@ -344,11 +344,7 @@ tomlkit==0.13.2
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/quality.txt
     #   pylint
 tox==4.24.1
-    # via
-    #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/ci.txt
-    #   tox-battery
-tox-battery==0.6.1
-    # via -r requirements/dev.in
+    # via -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/ci.txt
 twine==6.1.0
     # via -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/quality.txt
 typing-extensions==4.12.2

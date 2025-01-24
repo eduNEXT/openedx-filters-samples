@@ -1,5 +1,7 @@
 """
 Test cases for some Open edX Filters steps samples to illustrate how to use them.
+
+Not all steps are tested here, but you can use these test cases as a reference to implement your own tests.
 """
 
 from datetime import datetime
