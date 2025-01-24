@@ -11,6 +11,7 @@ certificate mode before rendering.
 
 These use cases are illustrative and can be adapted to your specific needs.
 """
+
 import logging
 from django.http import HttpResponse
 from opaque_keys.edx.keys import CourseKey
@@ -28,6 +29,7 @@ from openedx_filters.learning.filters import (
 )
 
 log = logging.getLogger(__name__)
+
 
 class ModifyUsernameBeforeRegistration(PipelineStep):
     """
@@ -47,16 +49,18 @@ class ModifyUsernameBeforeRegistration(PipelineStep):
     }
     """
 
-    def run_filter(
-        self, form_data, *args, **kwargs
-    ):
+    def run_filter(self, form_data, *args, **kwargs):
         """
         Modify the username before registration.
 
         Arguments:
             form_data (QueryDict): The form data containing the user's registration information.
         """
-        log.info("Modifying username from %s to %s", form_data.get("username"), f"{form_data.get('username')}-modified")
+        log.info(
+            "Modifying username from %s to %s",
+            form_data.get("username"),
+            f"{form_data.get('username')}-modified",
+        )
         username = f"{form_data.get('username')}-modified"
         form_data["username"] = username
         return {
@@ -66,9 +70,9 @@ class ModifyUsernameBeforeRegistration(PipelineStep):
 
 class ModifyUserProfileBeforeLogin(PipelineStep):
     """
-    Add previous_login field to the user's profile before login.
+    Add last_login field to the user's profile before login.
 
-    By modifying the user's profile before login, now the user's profile will have a previous_login field
+    By modifying the user's profile before login, now the user's profile will have a last_login field
     with the value of the user's last login.
 
     Example usage:
@@ -112,9 +116,7 @@ class ModifyModeBeforeEnrollment(PipelineStep):
     }
     """
 
-    def run_filter(
-        self, user, course_key, mode, *args, **kwargs
-    ):
+    def run_filter(self, user, course_key, mode, *args, **kwargs):
         """
         Change the enrollment mode to 'honor' before enrollment.
 
@@ -145,9 +147,7 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
         }
     """
 
-    def run_filter(
-        self, user, course_key, mode, status, *args, **kwargs
-    ):
+    def run_filter(self, user, course_key, mode, status, *args, **kwargs):
         """
         Change the certificate mode from 'honor' to 'no-id-professional' before certificate creation.
 
@@ -157,7 +157,10 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
             mode (str): The mode of the certificate.
             status (str): The status of the certificate.
         """
-        log.info("Modifying certificate mode before creation for user %s to no-id-professional", user.username)
+        log.info(
+            "Modifying certificate mode before creation for user %s to no-id-professional",
+            user.username,
+        )
         if mode == "honor":
             return {
                 "mode": "no-id-professional",
@@ -217,16 +220,16 @@ class ModifyUserProfileBeforeUnenrollment(PipelineStep):
         }
     """
 
-    def run_filter(
-        self, enrollment, *args, **kwargs
-    ):
+    def run_filter(self, enrollment, *args, **kwargs):
         """
         Modify the user's profile before un-enrollment.
 
         Arguments:
             enrollment (CourseEnrollment): The enrollment being un-enrolled.
         """
-        log.info("Modifying user profile before un-enrollment by adding unenrolled_from field")
+        log.info(
+            "Modifying user profile before un-enrollment by adding unenrolled_from field"
+        )
         enrollment.user.profile.set_meta({"unenrolled_from": str(enrollment.course_id)})
         enrollment.user.profile.save()
         return {}
@@ -251,9 +254,7 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
         }
     """
 
-    def run_filter(
-        self, current_membership, target_cohort, *args, **kwargs
-    ):
+    def run_filter(self, current_membership, target_cohort, *args, **kwargs):
         """
         Modify the user's profile before cohort change or assignment.
 
@@ -261,7 +262,9 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
             current_membership (CourseUserGroupMembership): The current membership of the user.
             target_cohort (CourseUserGroup): The target cohort to which the user is changing cohorts or being assigned.
         """
-        log.info("Modifying user profile before cohort change by adding cohort_info field")
+        log.info(
+            "Modifying user profile before cohort change by adding cohort_info field"
+        )
         user = current_membership.user
         user.profile.set_meta(
             {
@@ -296,7 +299,9 @@ class ModifyUpdatesFromCourse(PipelineStep):
             context (dict): The context data for the course about page.
             template_name (str): The template name for the course about page.
         """
-        log.info("Modifying course about by changing updates content to a simple message")
+        log.info(
+            "Modifying course about by changing updates content to a simple message"
+        )
         update_message = context["update_message_fragment"]
         if update_message:
             update_message.content = "<p>This is a simple message</p>"
@@ -332,7 +337,9 @@ class RenderCustomCertificateStep(PipelineStep):
             context (dict): The context data for the certificate.
             custom_template (str): The custom template to render.
         """
-        log.info("Rendering custom certificate template for course %s", context["course_id"])
+        log.info(
+            "Rendering custom certificate template for course %s", context["course_id"]
+        )
         course_key = CourseKey.from_string(context["course_id"])
         custom_template = self._get_or_create_custom_template(
             mode="honor", course_key=course_key
@@ -432,9 +439,7 @@ class StopCertificateCreation(PipelineStep):
     }
     """
 
-    def run_filter(
-        self, user, course_key, mode, status, grade, generation_mode
-    ):
+    def run_filter(self, user, course_key, mode, status, grade, generation_mode):
         """
         Raise PreventCertificateCreation exception to stop the certificate generation in all cases.
 
@@ -566,9 +571,7 @@ class StopUnenrollment(PipelineStep):
         }
     """
 
-    def run_filter(
-        self, enrollment, *args, **kwargs
-    ):
+    def run_filter(self, enrollment, *args, **kwargs):
         """
         Raise PreventUnenrollment exception to stop the un-enrollment process in all cases.
 
@@ -601,9 +604,7 @@ class RenderAlternativeCertificate(PipelineStep):
         }
     """
 
-    def run_filter(
-        self, context, custom_template, *args, **kwargs
-    ):
+    def run_filter(self, context, custom_template, *args, **kwargs):
         """
         Raise RenderAlternativeInvalidCertificate exception to alter the certificate generation process.
 
@@ -611,7 +612,9 @@ class RenderAlternativeCertificate(PipelineStep):
             context (dict): The context data for the certificate.
             custom_template (str): The custom template to render.
         """
-        log.info("Rendering alternative certificate for course %s", context["course_id"])
+        log.info(
+            "Rendering alternative certificate for course %s", context["course_id"]
+        )
         raise CertificateRenderStarted.RenderAlternativeInvalidCertificate(
             "You can't generate a certificate from this site.",
         )
@@ -636,9 +639,7 @@ class RenderCustomResponseCertificate(PipelineStep):
         }
     """
 
-    def run_filter(
-        self, context, custom_template, *args, **kwargs
-    ):
+    def run_filter(self, context, custom_template, *args, **kwargs):
         """
         Raise RenderCustomResponse exception to alter the certificate generation process.
 
@@ -681,7 +682,9 @@ class RedirectToCustomCertificate(PipelineStep):
             context (dict): The context data for the certificate.
             custom_template (str): The custom template to render.
         """
-        log.info("Redirecting to custom certificate page for course %s", context["course_id"])
+        log.info(
+            "Redirecting to custom certificate page for course %s", context["course_id"]
+        )
         raise CertificateRenderStarted.RedirectToPage(
             "You can't generate a certificate from this site, redirecting to the correct location.",
             redirect_to="https://certificate.pdf",
@@ -707,9 +710,7 @@ class RenderResponseCourseAbout(PipelineStep):
         }
     """
 
-    def run_filter(
-        self, context, custom_template, *args, **kwargs
-    ):
+    def run_filter(self, context, custom_template, *args, **kwargs):
         """
         Raise RenderCustomResponse exception to alter the course about render process.
 
@@ -759,7 +760,10 @@ class RenderAlternativeCourseAbout(PipelineStep):
             context (dict): The context data for the course about page.
             template_name (str): The template name for the course about page.
         """
-        log.info("Rendering alternative course about page for course %s", context["course_id"])
+        log.info(
+            "Rendering alternative course about page for course %s",
+            context["course_id"],
+        )
         raise CourseAboutRenderStarted.RenderInvalidCourseAbout(
             "You can't view this course.",
             course_about_template="static_templates/404.html",
@@ -794,7 +798,10 @@ class RedirectCustomCourseAbout(PipelineStep):
             context (dict): The context data for the course about page.
             template_name (str): The template name for the course about page.
         """
-        log.info("Redirecting to custom course about page for course %s", context["course_id"])
+        log.info(
+            "Redirecting to custom course about page for course %s",
+            context["course_id"],
+        )
         raise CourseAboutRenderStarted.RedirectToPage(
             "You can't access this courses about page, redirecting to the correct location.",
             redirect_to="https://custom-course-about.com",
@@ -819,9 +826,7 @@ class StopCohortChange(PipelineStep):
         }
     """
 
-    def run_filter(
-        self, current_membership, target_cohort, *args, **kwargs
-    ):
+    def run_filter(self, current_membership, target_cohort, *args, **kwargs):
         """
         Raise PreventCohortChange exception to stop the cohort change process in all cases.
 
@@ -851,9 +856,7 @@ class StopCohortAssignment(PipelineStep):
         }
     """
 
-    def run_filter(
-        self, user, target_cohort, *args, **kwargs
-    ):
+    def run_filter(self, user, target_cohort, *args, **kwargs):
         """
         Raise PreventCohortAssignment exception to stop the cohort assignment process in all cases.
 

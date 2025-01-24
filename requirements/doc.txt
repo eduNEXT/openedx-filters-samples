@@ -226,7 +226,7 @@ sqlparse==0.5.3
     # via
     #   -r /home/mgmdy/Work/Envs/Local/nightly/requirements/openedx-filters-samples/requirements/test.txt
     #   django
-starlette==0.45.2
+starlette==0.45.3
     # via sphinx-autobuild
 stevedore==5.4.0
     # via

@@ -1,6 +1,6 @@
 # Core requirements for using this application
 -c constraints.txt
 
-django              # Web application framework
-edx-opaque-keys[django]
-openedx-filters
+django                      # Web application framework
+edx-opaque-keys[django]     # Opaque keys for Django
+openedx-filters             # Open edX Filters definitions

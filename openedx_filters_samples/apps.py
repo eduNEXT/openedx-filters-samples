@@ -10,4 +10,4 @@ class OpenedxFiltersSamplesConfig(AppConfig):
     Configuration for the openedx_filters_samples Django application.
     """
 
-    name = 'openedx_filters_samples'
+    name = "openedx_filters_samples"

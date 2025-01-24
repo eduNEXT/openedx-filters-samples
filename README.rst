@@ -48,7 +48,7 @@ Features
 Supported Filters
 -----------------
 
-These are the filters that are currently supported in this repository: :doc:`pipeline-steps`.
+These are the filters that are currently supported in this repository: pipeline-steps.
 
 How Does it Work?
 -----------------

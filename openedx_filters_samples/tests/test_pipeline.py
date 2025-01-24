@@ -39,7 +39,7 @@ class SampleStepsTestCase(TestCase):
             "org.openedx.learning.student.registration.requested.v1": {
                 "fail_silently": False,
                 "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.ModifyUsernameBeforeRegistration"
+                    "openedx_filters_samples.pipeline.ModifyUsernameBeforeRegistration"
                 ],
             }
         }
@@ -63,7 +63,7 @@ class SampleStepsTestCase(TestCase):
         OPEN_EDX_FILTERS_CONFIG={
             "org.openedx.learning.student.registration.requested.v1": {
                 "fail_silently": False,
-                "pipeline": ["openedx_filters_samples.samples.pipeline.StopRegister"],
+                "pipeline": ["openedx_filters_samples.pipeline.StopRegister"],
             }
         }
     )
@@ -82,7 +82,7 @@ class SampleStepsTestCase(TestCase):
             "org.openedx.learning.student.login.requested.v1": {
                 "fail_silently": False,
                 "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.ModifyUserProfileBeforeLogin"
+                    "openedx_filters_samples.pipeline.ModifyUserProfileBeforeLogin"
                 ],
             }
         }
@@ -98,7 +98,7 @@ class SampleStepsTestCase(TestCase):
 
         user.profile.set_meta.assert_called_once_with(
             {
-                "previous_login": str(self.user.last_login),
+                "last_login": str(self.user.last_login),
             }
         )
 
@@ -106,7 +106,7 @@ class SampleStepsTestCase(TestCase):
         OPEN_EDX_FILTERS_CONFIG={
             "org.openedx.learning.student.login.requested.v1": {
                 "fail_silently": False,
-                "pipeline": ["openedx_filters_samples.samples.pipeline.StopLogin"],
+                "pipeline": ["openedx_filters_samples.pipeline.StopLogin"],
             }
         }
     )
@@ -125,7 +125,7 @@ class SampleStepsTestCase(TestCase):
             "org.openedx.learning.course.enrollment.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
-                    "openedx_filters_samples.samples.pipeline.ModifyModeBeforeEnrollment"
+                    "openedx_filters_samples.pipeline.ModifyModeBeforeEnrollment"
                 ],
             }
         }
@@ -155,7 +155,7 @@ class SampleStepsTestCase(TestCase):
         OPEN_EDX_FILTERS_CONFIG={
             "org.openedx.learning.course.enrollment.started.v1": {
                 "fail_silently": False,
-                "pipeline": ["openedx_filters_samples.samples.pipeline.StopEnrollment"],
+                "pipeline": ["openedx_filters_samples.pipeline.StopEnrollment"],
             }
         }
     )
