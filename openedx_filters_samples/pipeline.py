@@ -13,6 +13,7 @@ These use cases are illustrative and can be adapted to your specific needs.
 """
 
 import logging
+
 from django.http import HttpResponse
 from opaque_keys.edx.keys import CourseKey
 from openedx_filters import PipelineStep
@@ -153,7 +154,7 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
 
         Arguments:
             user (User): The user requesting the certificate.
-            course_id (str): The course id for the course.
+            course_key (CourseKey): The course key for the course.
             mode (str): The mode of the certificate.
             status (str): The status of the certificate.
         """
@@ -268,7 +269,8 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
         user = current_membership.user
         user.profile.set_meta(
             {
-                "cohort_info": f"Changed from Cohort {str(current_membership.course_user_group)} to Cohort {str(target_cohort)}"  # pylint: disable=line-too-long
+                "cohort_info":
+                    f"Changed from Cohort {str(current_membership.course_user_group)} to Cohort {str(target_cohort)}"
             }
         )
         user.profile.save()
@@ -480,7 +482,9 @@ class StopEnrollment(PipelineStep):
         Raise PreventEnrollment exception to stop the enrollment process in all cases.
 
         Arguments:
-            enrollment (CourseEnrollment): The enrollment being processed.
+            user (User): The user enrolling in the course.
+            course_key (CourseKey): The course key for the course.
+            mode (str): The mode of the enrollment.
         """
         log.info("Stopping enrollment for user %s", user.username)
         raise CourseEnrollmentStarted.PreventEnrollment(
