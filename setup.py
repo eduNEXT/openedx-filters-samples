@@ -120,6 +120,7 @@ setup(
     version=VERSION,
     description="""Used to create Open edX Filters steps for testing purposes """,
     long_description=README + "\n\n" + CHANGELOG,
+    long_description_content_type='text/x-rst',
     author="edX",
     author_email="oscm@edx.org",
     url="https://github.com/edx/openedx-filters-samples",

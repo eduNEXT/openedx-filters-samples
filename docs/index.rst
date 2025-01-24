@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-openedx-filters-samples
-=======================
+Open edX Filters Samples
+########################
 
-Used to create Open edX Filters steps for testing purposes
+A ready-to-use repository illustrating how to use Open edX Filters to modify the behavior of the Open edX platform. It serves as a starting point for more advanced use cases.
 
 Contents:
 

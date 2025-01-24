@@ -39,8 +39,6 @@ LOCALE_PATHS = [
     root("openedx_filters_samples", "conf", "locale"),
 ]
 
-ROOT_URLCONF = "openedx_filters_samples.urls"
-
 SECRET_KEY = "insecure-secret-key"
 
 MIDDLEWARE = (
