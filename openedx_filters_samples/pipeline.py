@@ -277,42 +277,6 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
         return {}
 
 
-class ModifyUpdatesFromCourse(PipelineStep):
-    """
-    Modify any update from the course by changing the content to a simple message.
-
-    Example usage:
-
-    >>> OPEN_EDX_FILTERS_CONFIG = {
-            "org.openedx.learning.course_about.render.started.v1": {
-                "fail_silently": False,
-                "pipeline": [
-                    "openedx_filters_samples.pipeline.ModifyUpdatesFromCourse"
-                ]
-            }
-        }
-    """
-
-    def run_filter(self, context, template_name):
-        """
-        Modify the course updates content to a simple message.
-
-        Arguments:
-            context (dict): The context data for the course about page.
-            template_name (str): The template name for the course about page.
-        """
-        log.info(
-            "Modifying course about by changing updates content to a simple message"
-        )
-        update_message = context["update_message_fragment"]
-        if update_message:
-            update_message.content = "<p>This is a simple message</p>"
-        return {
-            "context": context,
-            template_name: template_name,
-        }
-
-
 class RenderCustomCertificateStep(PipelineStep):
     """
     Modify the certificate rendering process by creating a custom template.
