@@ -40,7 +40,7 @@ class ModifyUsernameBeforeRegistration(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
         "org.openedx.learning.student.registration.requested.v1": {
             "fail_silently": False,
             "pipeline": [
@@ -78,7 +78,7 @@ class ModifyUserProfileBeforeLogin(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
         "org.openedx.learning.student.login.requested.v1": {
             "fail_silently": False,
             "pipeline": [
@@ -107,7 +107,7 @@ class ModifyModeBeforeEnrollment(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
         "org.openedx.learning.course.enrollment.started.v1": {
             "fail_silently": False,
             "pipeline": [
@@ -138,14 +138,14 @@ class ModifyCertificateModeBeforeCreation(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.certificate.creation.requested.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.ModifyCertificateModeBeforeCreation"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.certificate.creation.requested.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.ModifyCertificateModeBeforeCreation"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, user, course_key, mode, status, *args, **kwargs):
@@ -178,14 +178,14 @@ class ModifyContextBeforeRender(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.certificate.render.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.ModifyContextBeforeRender"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.certificate.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.ModifyContextBeforeRender"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, context, *args, **kwargs):
@@ -211,14 +211,14 @@ class ModifyUserProfileBeforeUnenrollment(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.course.unenrollment.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.ModifyUserProfileBeforeUnenrollment"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.course.unenrollment.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.ModifyUserProfileBeforeUnenrollment"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, enrollment, *args, **kwargs):
@@ -245,14 +245,14 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.cohort.change.requested.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.ModifyUserProfileBeforeCohortChange"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.cohort.change.requested.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.ModifyUserProfileBeforeCohortChange"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, current_membership, target_cohort, *args, **kwargs):
@@ -283,14 +283,14 @@ class ModifyUpdatesFromCourse(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.course_about.render.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.ModifyUpdatesFromCourse"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.ModifyUpdatesFromCourse"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, context, template_name):
@@ -321,14 +321,14 @@ class RenderCustomCertificateStep(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.certificate.render.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.RenderCustomCertificateStep"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.certificate.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.RenderCustomCertificateStep"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, context, custom_template):
@@ -407,7 +407,7 @@ class NoopFilter(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
         "org.openedx.learning.course.enrollment.started.v1": {
             "fail_silently": False,
             "pipeline": [
@@ -431,7 +431,7 @@ class StopCertificateCreation(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
+    >>> OPEN_EDX_FILTERS_CONFIG = {
         "org.openedx.learning.certificate.creation.requested.v1": {
             "fail_silently": False,
             "pipeline": [
@@ -467,14 +467,14 @@ class StopEnrollment(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.course.enrollment.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.StopEnrollment"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.course.enrollment.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.StopEnrollment"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, user, course_key, mode, *args, **kwargs):
@@ -500,14 +500,14 @@ class StopRegister(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.student.registration.requested.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.StopRegister"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.student.registration.requested.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.StopRegister"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, form_data, *args, **kwargs):
@@ -532,14 +532,14 @@ class StopLogin(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.student.login.requested.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.StopLogin"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.student.login.requested.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.StopLogin"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, user, *args, **kwargs):
@@ -565,14 +565,14 @@ class StopUnenrollment(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.course.unenrollment.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.StopUnenrollment"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.course.unenrollment.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.StopUnenrollment"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, enrollment, *args, **kwargs):
@@ -598,14 +598,14 @@ class RenderAlternativeCertificate(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.certificate.render.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.RenderAlternativeCertificate"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.certificate.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.RenderAlternativeCertificate"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, context, custom_template, *args, **kwargs):
@@ -633,14 +633,14 @@ class RenderCustomResponseCertificate(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.certificate.render.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.RenderCustomResponseCertificate"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.certificate.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.RenderCustomResponseCertificate"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, context, custom_template, *args, **kwargs):
@@ -668,14 +668,14 @@ class RedirectToCustomCertificate(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.certificate.render.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.RenderCustomCertificateStep"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.certificate.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.RenderCustomCertificateStep"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, context, custom_template):
@@ -704,14 +704,14 @@ class RenderResponseCourseAbout(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.course_about.render.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.RenderResponseCourseAbout"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.RenderResponseCourseAbout"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, context, custom_template, *args, **kwargs):
@@ -743,14 +743,14 @@ class RenderAlternativeCourseAbout(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.course_about.render.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.RenderAlternativeCourseAbout"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.RenderAlternativeCourseAbout"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, context, template_name):
@@ -784,14 +784,14 @@ class RedirectCustomCourseAbout(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.course_about.render.started.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.RedirectCustomCourseAbout"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.course_about.render.started.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.RedirectCustomCourseAbout"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, context, template_name):
@@ -820,14 +820,14 @@ class StopCohortChange(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.cohort.change.requested.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.StopCohortChange"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.cohort.change.requested.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.StopCohortChange"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, current_membership, target_cohort, *args, **kwargs):
@@ -850,14 +850,14 @@ class StopCohortAssignment(PipelineStep):
 
     Example usage:
 
-    OPEN_EDX_FILTERS_CONFIG = {
-        "org.openedx.learning.cohort.assignment.requested.v1": {
-            "fail_silently": False,
-            "pipeline": [
-                "openedx_filters_samples.pipeline.StopCohortAssignment"
-            ]
+    >>> OPEN_EDX_FILTERS_CONFIG = {
+            "org.openedx.learning.cohort.assignment.requested.v1": {
+                "fail_silently": False,
+                "pipeline": [
+                    "openedx_filters_samples.pipeline.StopCohortAssignment"
+                ]
+            }
         }
-    }
     """
 
     def run_filter(self, user, target_cohort, *args, **kwargs):
