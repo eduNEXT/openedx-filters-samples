@@ -238,9 +238,9 @@ class ModifyUserProfileBeforeUnenrollment(PipelineStep):
 
 class ModifyUserProfileBeforeCohortChange(PipelineStep):
     """
-    Add cohort_info field to the user's profile before cohort change or assignment.
+    Add cohort_info field to the user's profile before cohort change.
 
-    By modifying the user's profile before cohort change or assignment, now the user's profile will have a cohort_info
+    By modifying the user's profile before cohort change, now the user's profile will have a cohort_info
     field with the value of the course user group from which the user is changing cohorts or being assigned to a cohort.
 
     Example usage:
