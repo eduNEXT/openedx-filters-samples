@@ -678,7 +678,7 @@ class RenderResponseCourseAbout(PipelineStep):
         }
     """
 
-    def run_filter(self, context, custom_template, *args, **kwargs):
+    def run_filter(self, context, template_name, *args, **kwargs):
         """
         Raise RenderCustomResponse exception to alter the course about render process.
 
@@ -687,7 +687,7 @@ class RenderResponseCourseAbout(PipelineStep):
 
         Arguments:
             context (dict): The context data for the course about page.
-            custom_template (str): The custom template to render.
+            template_name (str): The custom template to render.
         """
         log.info("Rendering custom response for course %s", context["course"].id)
         response = HttpResponse("Here's the text of the web page.")
