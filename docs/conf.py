@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath(".."))
 
 # -- Project information -----------------------------------------------------
 
-project = "Open edX Events"
+project = "Open edX Filters Samples"
 copyright = "2025, edunext"
 author = "edunext"
 
@@ -36,7 +36,6 @@ extensions = [
     "sphinx_copybutton",
     "sphinx.ext.graphviz",
     "sphinxcontrib.mermaid",
-    "code_annotations.contrib.sphinx.extensions.openedx_events",
     "code_annotations.contrib.sphinx.extensions.settings",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
@@ -67,7 +66,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = "sphinx_book_theme"
 
 html_theme_options = {
-    "repository_url": "https://github.com/openedx/openedx-events",
+    "repository_url": "https://github.com/edunext/openedx-filters-samples",
     "repository_branch": "main",
     "path_to_docs": "docs/",
     "use_repository_button": True,
