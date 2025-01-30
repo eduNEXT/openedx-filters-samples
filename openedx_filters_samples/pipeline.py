@@ -277,7 +277,7 @@ class ModifyUserProfileBeforeCohortChange(PipelineStep):
         return {}
 
 
-class RenderCustomCertificateStep(PipelineStep):
+class RenderCustomCertificate(PipelineStep):
     """
     Modify the certificate rendering process by creating a custom template.
 
@@ -289,7 +289,7 @@ class RenderCustomCertificateStep(PipelineStep):
             "org.openedx.learning.certificate.render.started.v1": {
                 "fail_silently": False,
                 "pipeline": [
-                    "openedx_filters_samples.pipeline.RenderCustomCertificateStep"
+                    "openedx_filters_samples.pipeline.RenderCustomCertificate"
                 ]
             }
         }
@@ -689,7 +689,7 @@ class RenderResponseCourseAbout(PipelineStep):
             context (dict): The context data for the course about page.
             custom_template (str): The custom template to render.
         """
-        log.info("Rendering custom response for course %s", context["course_id"])
+        log.info("Rendering custom response for course %s", context["course"].id)
         response = HttpResponse("Here's the text of the web page.")
         raise CourseAboutRenderStarted.RenderCustomResponse(
             "You can't access this courses home page, redirecting to the correct location.",
@@ -730,7 +730,7 @@ class RenderAlternativeCourseAbout(PipelineStep):
         """
         log.info(
             "Rendering alternative course about page for course %s",
-            context["course_id"],
+            context["course"].id,
         )
         raise CourseAboutRenderStarted.RenderInvalidCourseAbout(
             "You can't view this course.",
@@ -768,7 +768,7 @@ class RedirectCustomCourseAbout(PipelineStep):
         """
         log.info(
             "Redirecting to custom course about page for course %s",
-            context["course_id"],
+            context["course"].id,
         )
         raise CourseAboutRenderStarted.RedirectToPage(
             "You can't access this courses about page, redirecting to the correct location.",
