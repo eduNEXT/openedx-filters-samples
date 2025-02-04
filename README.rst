@@ -103,6 +103,8 @@ To use this plugin, follow these steps:
 
 4. Trigger the filter by enrolling in a course. The filter will be applied and the pipeline step will be executed stopping the enrollment process.
 
+Review the `Tutor documentation`_ for more information on using plugins and extra requirements.
+
 How to Extend this Repository
 -----------------------------
 
