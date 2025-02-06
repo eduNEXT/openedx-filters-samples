@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Pipeline Steps &#8212; Open edX Events latest documentation</title>
+    <title>Pipeline Steps &#8212; Open edX Filters Samples latest documentation</title>
   
   
   
@@ -135,8 +135,8 @@
       
     
     
-    <img src="https://logos.openedx.org/open-edx-logo-color.png" class="logo__image only-light" alt="Open edX Events latest documentation - Home"/>
-    <img src="https://logos.openedx.org/open-edx-logo-color.png" class="logo__image only-dark pst-js-only" alt="Open edX Events latest documentation - Home"/>
+    <img src="https://logos.openedx.org/open-edx-logo-color.png" class="logo__image only-light" alt="Open edX Filters Samples latest documentation - Home"/>
+    <img src="https://logos.openedx.org/open-edx-logo-color.png" class="logo__image only-dark pst-js-only" alt="Open edX Filters Samples latest documentation - Home"/>
   
   
 </a></div>
@@ -211,7 +211,7 @@
       
       
       
-      <li><a href="https://github.com/openedx/openedx-events" target="_blank"
+      <li><a href="https://github.com/edunext/openedx-filters-samples" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -228,7 +228,7 @@
       
       
       
-      <li><a href="https://github.com/openedx/openedx-events/edit/main/docs/pipeline-steps.rst" target="_blank"
+      <li><a href="https://github.com/edunext/openedx-filters-samples/edit/main/docs/pipeline-steps.rst" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -245,7 +245,7 @@
       
       
       
-      <li><a href="https://github.com/openedx/openedx-events/issues/new?title=Issue%20on%20page%20%2Fpipeline-steps.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/edunext/openedx-filters-samples/issues/new?title=Issue%20on%20page%20%2Fpipeline-steps.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -373,10 +373,6 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.ModifyModeBeforeEnrollment.run_filter"><code class="docutils literal notranslate"><span class="pre">ModifyModeBeforeEnrollment.run_filter()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.ModifyUpdatesFromCourse"><code class="docutils literal notranslate"><span class="pre">ModifyUpdatesFromCourse</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.ModifyUpdatesFromCourse.run_filter"><code class="docutils literal notranslate"><span class="pre">ModifyUpdatesFromCourse.run_filter()</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.ModifyUserProfileBeforeCohortChange"><code class="docutils literal notranslate"><span class="pre">ModifyUserProfileBeforeCohortChange</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.ModifyUserProfileBeforeCohortChange.run_filter"><code class="docutils literal notranslate"><span class="pre">ModifyUserProfileBeforeCohortChange.run_filter()</span></code></a></li>
 </ul>
@@ -413,8 +409,8 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderAlternativeCourseAbout.run_filter"><code class="docutils literal notranslate"><span class="pre">RenderAlternativeCourseAbout.run_filter()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderCustomCertificateStep"><code class="docutils literal notranslate"><span class="pre">RenderCustomCertificateStep</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderCustomCertificateStep.run_filter"><code class="docutils literal notranslate"><span class="pre">RenderCustomCertificateStep.run_filter()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderCustomCertificate"><code class="docutils literal notranslate"><span class="pre">RenderCustomCertificate</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderCustomCertificate.run_filter"><code class="docutils literal notranslate"><span class="pre">RenderCustomCertificate.run_filter()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderCustomResponseCertificate"><code class="docutils literal notranslate"><span class="pre">RenderCustomResponseCertificate</span></code></a><ul class="nav section-nav flex-column">
@@ -571,41 +567,10 @@ that can be used in the template to check if the context was modified.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="openedx_filters_samples.pipeline.ModifyUpdatesFromCourse">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openedx_filters_samples.pipeline.</span></span><span class="sig-name descname"><span class="pre">ModifyUpdatesFromCourse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">running_pipeline</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openedx_filters_samples.pipeline.ModifyUpdatesFromCourse" title="Link to this definition">#</a></dt>
-<dd><p>Modify any update from the course by changing the content to a simple message.</p>
-<p>Example usage:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">OPEN_EDX_FILTERS_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
-<span class="go">        &quot;org.openedx.learning.course_about.render.started.v1&quot;: {</span>
-<span class="go">            &quot;fail_silently&quot;: False,</span>
-<span class="go">            &quot;pipeline&quot;: [</span>
-<span class="go">                &quot;openedx_filters_samples.pipeline.ModifyUpdatesFromCourse&quot;</span>
-<span class="go">            ]</span>
-<span class="go">        }</span>
-<span class="go">    }</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="openedx_filters_samples.pipeline.ModifyUpdatesFromCourse.run_filter">
-<span class="sig-name descname"><span class="pre">run_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openedx_filters_samples.pipeline.ModifyUpdatesFromCourse.run_filter" title="Link to this definition">#</a></dt>
-<dd><p>Modify the course updates content to a simple message.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>context</strong> (<em>dict</em>) – The context data for the course about page.</p></li>
-<li><p><strong>template_name</strong> (<em>str</em>) – The template name for the course about page.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="openedx_filters_samples.pipeline.ModifyUserProfileBeforeCohortChange">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openedx_filters_samples.pipeline.</span></span><span class="sig-name descname"><span class="pre">ModifyUserProfileBeforeCohortChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">running_pipeline</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openedx_filters_samples.pipeline.ModifyUserProfileBeforeCohortChange" title="Link to this definition">#</a></dt>
-<dd><p>Add cohort_info field to the user’s profile before cohort change or assignment.</p>
-<p>By modifying the user’s profile before cohort change or assignment, now the user’s profile will have a cohort_info
+<dd><p>Add cohort_info field to the user’s profile before cohort change.</p>
+<p>By modifying the user’s profile before cohort change, now the user’s profile will have a cohort_info
 field with the value of the course user group from which the user is changing cohorts or being assigned to a cohort.</p>
 <p>Example usage:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">OPEN_EDX_FILTERS_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
@@ -883,8 +848,8 @@ the course about view that redirects to the URL indicated.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="openedx_filters_samples.pipeline.RenderCustomCertificateStep">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openedx_filters_samples.pipeline.</span></span><span class="sig-name descname"><span class="pre">RenderCustomCertificateStep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">running_pipeline</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openedx_filters_samples.pipeline.RenderCustomCertificateStep" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="openedx_filters_samples.pipeline.RenderCustomCertificate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openedx_filters_samples.pipeline.</span></span><span class="sig-name descname"><span class="pre">RenderCustomCertificate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">running_pipeline</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openedx_filters_samples.pipeline.RenderCustomCertificate" title="Link to this definition">#</a></dt>
 <dd><p>Modify the certificate rendering process by creating a custom template.</p>
 <p>By creating a custom certificate template, now the certificate will be rendered using the custom template.</p>
 <p>Example usage:</p>
@@ -892,15 +857,15 @@ the course about view that redirects to the URL indicated.</p>
 <span class="go">        &quot;org.openedx.learning.certificate.render.started.v1&quot;: {</span>
 <span class="go">            &quot;fail_silently&quot;: False,</span>
 <span class="go">            &quot;pipeline&quot;: [</span>
-<span class="go">                &quot;openedx_filters_samples.pipeline.RenderCustomCertificateStep&quot;</span>
+<span class="go">                &quot;openedx_filters_samples.pipeline.RenderCustomCertificate&quot;</span>
 <span class="go">            ]</span>
 <span class="go">        }</span>
 <span class="go">    }</span>
 </pre></div>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="openedx_filters_samples.pipeline.RenderCustomCertificateStep.run_filter">
-<span class="sig-name descname"><span class="pre">run_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_template</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openedx_filters_samples.pipeline.RenderCustomCertificateStep.run_filter" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="openedx_filters_samples.pipeline.RenderCustomCertificate.run_filter">
+<span class="sig-name descname"><span class="pre">run_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_template</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openedx_filters_samples.pipeline.RenderCustomCertificate.run_filter" title="Link to this definition">#</a></dt>
 <dd><p>Get or create a new custom template to render instead of the original.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -966,7 +931,7 @@ will be rendered instead of the course about page. In this case, the response wi
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="openedx_filters_samples.pipeline.RenderResponseCourseAbout.run_filter">
-<span class="sig-name descname"><span class="pre">run_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_template</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openedx_filters_samples.pipeline.RenderResponseCourseAbout.run_filter" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openedx_filters_samples.pipeline.RenderResponseCourseAbout.run_filter" title="Link to this definition">#</a></dt>
 <dd><p>Raise RenderCustomResponse exception to alter the course about render process.</p>
 <p>When raising the exception, this filter uses a redirect_to field handled by
 the course about view that redirects to the URL indicated.</p>
@@ -974,7 +939,7 @@ the course about view that redirects to the URL indicated.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>context</strong> (<em>dict</em>) – The context data for the course about page.</p></li>
-<li><p><strong>custom_template</strong> (<em>str</em>) – The custom template to render.</p></li>
+<li><p><strong>template_name</strong> (<em>str</em>) – The custom template to render.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1254,10 +1219,6 @@ error code.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.ModifyModeBeforeEnrollment.run_filter"><code class="docutils literal notranslate"><span class="pre">ModifyModeBeforeEnrollment.run_filter()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.ModifyUpdatesFromCourse"><code class="docutils literal notranslate"><span class="pre">ModifyUpdatesFromCourse</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.ModifyUpdatesFromCourse.run_filter"><code class="docutils literal notranslate"><span class="pre">ModifyUpdatesFromCourse.run_filter()</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.ModifyUserProfileBeforeCohortChange"><code class="docutils literal notranslate"><span class="pre">ModifyUserProfileBeforeCohortChange</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.ModifyUserProfileBeforeCohortChange.run_filter"><code class="docutils literal notranslate"><span class="pre">ModifyUserProfileBeforeCohortChange.run_filter()</span></code></a></li>
 </ul>
@@ -1294,8 +1255,8 @@ error code.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderAlternativeCourseAbout.run_filter"><code class="docutils literal notranslate"><span class="pre">RenderAlternativeCourseAbout.run_filter()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderCustomCertificateStep"><code class="docutils literal notranslate"><span class="pre">RenderCustomCertificateStep</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderCustomCertificateStep.run_filter"><code class="docutils literal notranslate"><span class="pre">RenderCustomCertificateStep.run_filter()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderCustomCertificate"><code class="docutils literal notranslate"><span class="pre">RenderCustomCertificate</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderCustomCertificate.run_filter"><code class="docutils literal notranslate"><span class="pre">RenderCustomCertificate.run_filter()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#openedx_filters_samples.pipeline.RenderCustomResponseCertificate"><code class="docutils literal notranslate"><span class="pre">RenderCustomResponseCertificate</span></code></a><ul class="nav section-nav flex-column">
