@@ -8,3 +8,6 @@ disable+=
     invalid-name,
     django-not-configured,
     consider-using-with,
+    unused-argument,
+    too-many-positional-arguments,
+    arguments-differ,

@@ -1,5 +1,5 @@
 Change Log
-----------
+==========
 
 ..
    All enhancements and patches to openedx_filters_samples will be documented
@@ -12,14 +12,14 @@ Change Log
 .. There should always be an "Unreleased" section for changes pending release.
 
 Unreleased
-~~~~~~~~~~
+----------
 
 *
 
 [0.1.0] - 2021-11-26
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 Added
-_____
+~~~~~
 
 * First release on PyPI.
